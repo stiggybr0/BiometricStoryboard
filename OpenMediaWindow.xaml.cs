@@ -29,7 +29,7 @@ namespace BiometricStoryboard
         {
 
         }
-
+        /*
         private void LeftVideoBrowse_Click(object sender, RoutedEventArgs e)
         {
             Stream checkStream = null;
@@ -76,7 +76,7 @@ namespace BiometricStoryboard
                 }
             }
         }
-
+        
         public static Window GetWindowRef_ByName(string strWindowName)
         {
             foreach (Window win in Application.Current.Windows)
@@ -85,5 +85,6 @@ namespace BiometricStoryboard
             //Got here? Then the window hasn't been loaded.
             return null;
         }
+         * */
     }
 }

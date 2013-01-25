@@ -6,8 +6,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <MediaElement HorizontalAlignment="Left" Height="315" Margin="0,20,0,0" VerticalAlignment="Top" Width="628" Name="LeftVideo"/>
-        <MediaElement HorizontalAlignment="Left" Margin="634,20,0,346" Width="624" Name="RightVideo" />
+        <MediaElement HorizontalAlignment="Left" LoadedBehavior="Manual" Opacity="1" AllowDrop="True" Stretch="Uniform" IsMuted="False" Height="315" Margin="0,20,0,0" VerticalAlignment="Top" Width="628" Name="LeftVideo" MediaEnded="LeftVideo_MediaEnded" MediaOpened="LeftVideo_MediaOpened"/>
+        <MediaElement HorizontalAlignment="Right" LoadedBehavior="Manual" Opacity="1" AllowDrop="True" Stretch="Uniform" IsMuted="False" Height="315" Margin="0,20,0,0" VerticalAlignment="Top" Width="624" Name="RightVideo" MediaEnded="RightVideo_MediaEnded" MediaOpened="RightVideo_MediaOpened" />
         <Button Content="Pause" HorizontalAlignment="Left" Margin="513,358,0,291" Width="75" Name="PauseButton" Click="PauseButton_Click" />
         <Button Content="SnapShot" HorizontalAlignment="Left" Margin="675,358,0,0" VerticalAlignment="Top" Width="75" Height="31"/>
         <Button Content="Export" HorizontalAlignment="Left" Margin="756,358,0,0" VerticalAlignment="Top" Width="75" Height="31"/>
@@ -26,5 +26,13 @@
         <Menu Height="23" HorizontalAlignment="Left" Margin="56,-3,0,0" Name="Browse" VerticalAlignment="Top" Width="56" />
         <Button Content="Browse Media" Height="35" HorizontalAlignment="Left" Margin="1167,359,0,0" Name="RightBrowse" VerticalAlignment="Top" Width="91" Click="RightBrowse_Click" />
         <Button Content="Open Media" Height="30" HorizontalAlignment="Right" Margin="0,359,871,0" Name="OpenMediaButton" VerticalAlignment="Top" Width="82" Click="OpenMediaButton_Click" />
+        <Slider Height="23" Margin="12,312,1146,0" Name="LeftVolumeSlider" VerticalAlignment="Top" ValueChanged="LeftVolumeSlider_ValueChanged" />
+        <Slider Height="23" HorizontalAlignment="Left" Margin="642,312,0,0" Name="RightVolumeSlider" VerticalAlignment="Top" Width="100" />
+        <ProgressBar Height="23" HorizontalAlignment="Left" Margin="164,312,0,0" Name="LeftProgressBar" VerticalAlignment="Top" Width="464" />
+        <ProgressBar Height="23" HorizontalAlignment="Right" Margin="0,312,0,0" Name="RightProgressBar" VerticalAlignment="Top" Width="467" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="118,312,0,0" Name="LeftCurrentTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Width="40"/>
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="748,312,0,0" Name="RightCurrentTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Width="41" />
+        <Slider Height="23" HorizontalAlignment="Left" Margin="164,312,0,0" Name="LeftSeekSlider" VerticalAlignment="Top" Width="464" />
+        <Slider Height="23" HorizontalAlignment="Left" Margin="791,312,0,0" Name="RightSeekSlider" VerticalAlignment="Top" Width="467" />
     </Grid>
 </Window>
