@@ -71,6 +71,11 @@ namespace BiometricStoryboard
             LeftVideo.Volume = LeftVolumeSlider.Value;
         }
 
+        private void RightVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            RightVideo.Volume = RightVolumeSlider.Value;
+        }
+
         private void LeftBrowse_Click(object sender, RoutedEventArgs e)
         {
             Stream checkStream = null;
@@ -93,7 +98,7 @@ namespace BiometricStoryboard
                 }
             }
         }
-
+        
         private void RightBrowse_Click(object sender, RoutedEventArgs e)
         {
             Stream checkStream = null;
@@ -199,11 +204,10 @@ namespace BiometricStoryboard
         {
             
             
-            if (LeftIsPlaying == true)
+            if (LeftIsPlaying)
             {
                 try
                 {
-
                     LeftVideo.Pause();
                     LeftIsPlaying = false;
                 }
@@ -212,7 +216,7 @@ namespace BiometricStoryboard
                     MessageBox.Show("Error: Left Video Pause Error" + ex.Message);
                 }
             }
-            if (RightIsPlaying == true)
+            if (RightIsPlaying)
             {
                 try
                 {
@@ -377,9 +381,5 @@ namespace BiometricStoryboard
         {
             RightVideo.Position = ts;
         }
-
-        
-    
-        
     }
 }

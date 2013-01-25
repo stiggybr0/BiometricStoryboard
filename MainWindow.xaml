@@ -32,7 +32,8 @@
         <ProgressBar Height="23" HorizontalAlignment="Right" Margin="0,312,0,0" Name="RightProgressBar" VerticalAlignment="Top" Width="467" />
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="118,312,0,0" Name="LeftCurrentTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Width="40"/>
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="748,312,0,0" Name="RightCurrentTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Width="41" />
-        <Slider Height="23" HorizontalAlignment="Left" Margin="164,312,0,0" Name="LeftSeekSlider" VerticalAlignment="Top" Width="464" />
-        <Slider Height="23" HorizontalAlignment="Left" Margin="791,312,0,0" Name="RightSeekSlider" VerticalAlignment="Top" Width="467" />
+        <Slider PreviewMouseLeftButtonUp="LeftSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="LeftSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="LeftSeekSlider_MouseLeftButtonUp" Height="23" HorizontalAlignment="Left" Margin="164,312,0,0" Name="LeftSeekSlider" VerticalAlignment="Top" Width="464" />
+        <Slider PreviewMouseLeftButtonUp="RightSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="RightSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="RightSeekSlider_MouseLeftButtonUp" Height="23" HorizontalAlignment="Left" Margin="791,312,0,0" Name="RightSeekSlider" VerticalAlignment="Top" Width="467" />
+        <Button Content="Browse Media" Height="35" HorizontalAlignment="Left" Margin="0,359,0,0" Name="LeftBrowse" VerticalAlignment="Top" Width="91" Click="LeftBrowse_Click"/>
     </Grid>
 </Window>
