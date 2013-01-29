@@ -381,5 +381,11 @@ namespace BiometricStoryboard
         {
             RightVideo.Position = ts;
         }
+
+        private void MakeNoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var MakeNote = new NoteWindow();
+            MakeNote.ShowDialog();
+        }
     }
 }
