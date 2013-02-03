@@ -4,18 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280" Loaded="Window_Loaded">
-    <Grid x:Name="MediaGrid"  Background="#FF0A0A0A">
+        Title="MainWindow" Height="720" Width="1263.2" Loaded="Window_Loaded" ResizeMode="NoResize">
+    <Grid x:Name="MediaGrid"  Background="#FF001528" Margin="0,0,-3.2,0.4">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <MediaElement HorizontalAlignment="Left" LoadedBehavior="Manual" Opacity="1" AllowDrop="True" Stretch="Uniform" IsMuted="False" Height="315" Margin="0,20,0,0" VerticalAlignment="Top" Width="626" Name="LeftVideo" MediaEnded="LeftVideo_MediaEnded" MediaOpened="LeftVideo_MediaOpened"/>
-        <MediaElement HorizontalAlignment="Right" LoadedBehavior="Manual" Opacity="1" AllowDrop="True" Stretch="Uniform" IsMuted="False" Height="315" Margin="0,20,0,0" VerticalAlignment="Top" Width="626" Name="RightVideo" MediaEnded="RightVideo_MediaEnded" MediaOpened="RightVideo_MediaOpened" />
-        <Button Content="Pause" HorizontalAlignment="Left" Margin="513,358,0,291" Width="75" Name="PauseButton" Click="PauseButton_Click" />
-        <Button Content="SnapShot" HorizontalAlignment="Left" Margin="675,358,0,0" VerticalAlignment="Top" Width="75" Height="31"/>
-        <Button Content="Export" HorizontalAlignment="Left" Margin="756,358,0,0" VerticalAlignment="Top" Width="75" Height="31"/>
-        <Button Content="Play" Name="PlayButton" Height="31" HorizontalAlignment="Left" Margin="432,359,0,0" VerticalAlignment="Top" Width="75" Click="playButtonClick" />
-        <Button Content="Stop" Height="31" HorizontalAlignment="Left" Margin="594,358,0,0" Name="StopButton" VerticalAlignment="Top" Width="75" Click="StopButton_Click" />
+        <Button Content="SnapShot" HorizontalAlignment="Left" Margin="658,375,0,0" VerticalAlignment="Top" Width="75" Height="30"/>
+        <Button Content="Export" HorizontalAlignment="Left" Margin="738,375,0,0" VerticalAlignment="Top" Width="75" Height="30"/>
+        <Button Content="Play" Name="PlayButton" Height="30" HorizontalAlignment="Left" Margin="418,375,0,0" VerticalAlignment="Top" Width="75" Click="playButtonClick" />
+        <Button Content="Stop" Height="30" HorizontalAlignment="Left" Margin="578,375,0,0" Name="StopButton" VerticalAlignment="Top" Width="75" Click="StopButton_Click" />
         <Menu x:Name="File" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="50">
             <MenuItem Header="_File" RenderTransformOrigin="0.509,0.741">
                 <MenuItem Header="_Open" HorizontalAlignment="Left" Width="145"/>
@@ -24,18 +21,23 @@
                 <MenuItem Header="_Exit" HorizontalAlignment="Left" Width="145"/>
             </MenuItem>
         </Menu>
-        <Image HorizontalAlignment="Left" Height="281" Margin="0,400,0,0" VerticalAlignment="Top" Width="1258" />
-        <Button Content="Browse Media" Height="35" HorizontalAlignment="Left" Margin="1167,359,0,0" Name="RightBrowse" VerticalAlignment="Top" Width="91" Click="RightBrowse_Click" />
-        <Button Content="Open Media" Height="30" HorizontalAlignment="Right" Margin="0,359,871,0" Name="OpenMediaButton" VerticalAlignment="Top" Width="82" Click="OpenMediaButton_Click" />
-        <Slider Height="23" Margin="0,312,1158,0" Name="LeftVolumeSlider" VerticalAlignment="Top" ValueChanged="LeftVolumeSlider_ValueChanged" />
-        <Slider Height="23" HorizontalAlignment="Right" Margin="0,312,516,0" Name="RightVolumeSlider" VerticalAlignment="Top" Width="100" />
-        <ProgressBar Height="23" HorizontalAlignment="Right" Margin="0,312,632,0" Name="LeftProgressBar" VerticalAlignment="Top" Width="473" />
-        <ProgressBar Height="23" HorizontalAlignment="Right" Margin="0,312,0,0" Name="RightProgressBar" VerticalAlignment="Top" Width="463" />
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="106,312,0,0" Name="LeftCurrentTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Width="41" Foreground="White"/>
-        <TextBlock Height="23" HorizontalAlignment="Left" Margin="748,312,0,0" Name="RightCurrentTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Width="41" Foreground="White"/>
-        <Slider PreviewMouseLeftButtonUp="LeftSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="LeftSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="LeftSeekSlider_MouseLeftButtonUp" Height="23" HorizontalAlignment="Left" Margin="157,312,0,0" Name="LeftSeekSlider" VerticalAlignment="Top" Width="469" />
-        <Slider PreviewMouseLeftButtonUp="RightSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="RightSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="RightSeekSlider_MouseLeftButtonUp" Height="23" HorizontalAlignment="Left" Margin="799,312,0,0" Name="RightSeekSlider" VerticalAlignment="Top" Width="459" />
-        <Button Content="Browse Media" Height="35" HorizontalAlignment="Left" Margin="0,359,0,0" Name="LeftBrowse" VerticalAlignment="Top" Width="91" Click="LeftBrowse_Click"/>
-        <Button Content="Make Note" Height="31" HorizontalAlignment="Left" Margin="837,358,0,0" Name="button1" VerticalAlignment="Top" Width="75" />
+        <Image HorizontalAlignment="Left" Height="200" Margin="0,437,-0.4,0" VerticalAlignment="Top" Width="1274" />
+        <Button Content="Open Media" Height="30" HorizontalAlignment="Right" Margin="0,375,844.6,0" Name="OpenMediaButton" VerticalAlignment="Top" Width="82" Click="OpenMediaButton_Click" />
+        <Slider Height="20" Margin="0,320,1163.2,0" Name="LeftVolumeSlider" VerticalAlignment="Top" ValueChanged="LeftVolumeSlider_ValueChanged" />
+        <TextBlock Height="20" HorizontalAlignment="Left" Margin="100,320,0,0" Name="LeftCurrentTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Width="50" Foreground="White"/>
+        <TextBlock Height="20" HorizontalAlignment="Left" Margin="740,320,0,0" Name="RightCurrentTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Width="50" Foreground="White"/>
+        <Button Content="Make Note" Height="30" HorizontalAlignment="Left" Margin="818,375,0,0" Name="MakeNoteButton" VerticalAlignment="Top" Width="75" Click="MakeNoteButton_Click" />
+        <TextBlock Height="20" HorizontalAlignment="Left" Margin="563,321,0,0" Name="LeftEndTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Foreground="White" Width="55"/>
+        <TextBlock Height="20" HorizontalAlignment="Left" Margin="1202,321,0,0" Name="RightEndTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Foreground="White" Width="55"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="300" Margin="0,20,0,0" VerticalAlignment="Top" Width="620" Background="Black"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="301" Margin="640,19,-2.4,0" VerticalAlignment="Top" Width="620" Background="Black"/>
+        <MediaElement HorizontalAlignment="Left" LoadedBehavior="Manual" Opacity="1" AllowDrop="True" Stretch="Uniform" IsMuted="False" Height="300" Margin="0,20,0,0" VerticalAlignment="Top" Width="620" x:Name="LeftVideo" MediaEnded="LeftVideo_MediaEnded" MediaOpened="LeftVideo_MediaOpened"/>
+        <MediaElement HorizontalAlignment="Right" LoadedBehavior="Manual" Opacity="1" AllowDrop="True" Stretch="Uniform" IsMuted="False" Height="300" Margin="0,20,1,0" VerticalAlignment="Top" Width="620" x:Name="RightVideo" MediaEnded="RightVideo_MediaEnded" MediaOpened="RightVideo_MediaOpened" OpacityMask="Black" />
+        <Button Content="Pause" HorizontalAlignment="Left" Margin="498,375,0,0" VerticalAlignment="Top" Width="75" Height="30" Name="PauseButton" Click="PauseButton_Click"/>
+        <Slider HorizontalAlignment="Left" Margin="640,320,0,0" VerticalAlignment="Top" Width="95" Height="20" Name="RightVolumeSlider"/>
+        <ProgressBar Height="22" HorizontalAlignment="Right" Margin="0,320,702.6,0" x:Name="LeftProgressBar" VerticalAlignment="Top" Width="400" Foreground="#FF5F1718" Background="#FF5F5F5F" />
+        <ProgressBar Height="22" HorizontalAlignment="Right" Margin="0,320,60.6,0" x:Name="RightProgressBar" VerticalAlignment="Top" Width="402" Foreground="#FF5F1718" Background="#FF5F5F5F" />
+        <Slider PreviewMouseLeftButtonUp="LeftSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="LeftSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="LeftSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="148,322,0,0" x:Name="LeftSeekSlider" VerticalAlignment="Top" Width="400" Background="{x:Null}" />
+        <Slider PreviewMouseLeftButtonUp="RightSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="RightSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="RightSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="788,322,0,0" x:Name="RightSeekSlider" VerticalAlignment="Top" Width="402" Background="{x:Null}" />
     </Grid>
 </Window>

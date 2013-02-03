@@ -3,13 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Open Media" Height="202" Width="366" Loaded="Window_Loaded" AllowsTransparency="False" Opacity="1" BorderThickness="0">
     <Grid Height="163" Width="344">
-        <Button Content="Browse..." Height="23" HorizontalAlignment="Left" Margin="12,11,0,0" Name="LeftVideoBrowse" VerticalAlignment="Top" Width="75"  />
-        <Button Content="Browse..." Height="23" HorizontalAlignment="Left" Margin="12,41,0,0" Name="RightVideoBrowse" VerticalAlignment="Top" Width="75"  />
-        <Button Content="Browse..." Height="23" HorizontalAlignment="Left" Margin="12,70,0,0" Name="BiometricDataBrowse" VerticalAlignment="Top" Width="75" />
+        <Button Content="Browse..." Height="23" HorizontalAlignment="Left" Margin="12,11,0,0" Name="LeftVideoBrowse" VerticalAlignment="Top" Width="75" Click="LeftVideoBrowse_Click" />
+        <Button Content="Browse..." Height="23" HorizontalAlignment="Left" Margin="12,41,0,0" Name="RightVideoBrowse" VerticalAlignment="Top" Width="75" Click="RightVideoBrowse_Click"  />
+        <Button Content="Browse..." Height="23" HorizontalAlignment="Left" Margin="12,70,0,0" Name="BiometricDataBrowse" VerticalAlignment="Top" Width="75" Click="BiometricDataBrowse_Click" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="93,11,0,0" Name="LeftVideoPath" VerticalAlignment="Top" Width="239" Text="Left Video Path..."/>
         <TextBox Height="23" HorizontalAlignment="Left" Margin="93,42,0,0" Name="RightVideoPath" VerticalAlignment="Top" Width="239" Text="Right Video Path..."/>
         <TextBox Height="23" HorizontalAlignment="Left" Margin="93,70,0,0" Name="BiometricDataPath" VerticalAlignment="Top" Width="239" Text="Data Path..." />
-        <Button Content="OK" Height="23" HorizontalAlignment="Right" Margin="0,128,12,0" Name="OkButton" VerticalAlignment="Top" Width="75" />
-        <Button Content="Cancel" Height="23" HorizontalAlignment="Left" Margin="176,128,0,0" Name="CancelButton" VerticalAlignment="Top" Width="75" />
+        <Button Content="OK" Height="23" HorizontalAlignment="Right" Margin="0,128,12,0" Name="OkButton" VerticalAlignment="Top" Width="75" Click="OkButton_Click" IsDefault="True" />
+        <Button Content="Cancel" Height="23" HorizontalAlignment="Left" Margin="176,128,0,0" Name="CancelButton" VerticalAlignment="Top" Width="75" IsCancel="True" Click="CancelButton_Click" />
     </Grid>
 </Window>

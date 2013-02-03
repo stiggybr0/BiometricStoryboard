@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="NoteWindow" Height="315" Width="455">
-    <Grid>
-        <TextBox Text="Note.." Height="237" HorizontalAlignment="Left" Name="NoteTextBox" VerticalAlignment="Top" Width="433" />
+    <Grid Margin="0,0,-0.2,-3.4">
+        <TextBox Text="Note.." Height="237" HorizontalAlignment="Left" Name="NoteTextBox" VerticalAlignment="Top" Width="449" Margin="0,0,-0.2,0" />
         <Button Content="Ok" Height="23" HorizontalAlignment="Left" Margin="346,241,0,0" Name="OkButton" VerticalAlignment="Top" Width="75" />
         <Button Content="Cancel" Height="23" HorizontalAlignment="Left" Margin="265,241,0,0" Name="CancelButton" VerticalAlignment="Top" Width="75" />
     </Grid>

@@ -29,62 +29,103 @@ namespace BiometricStoryboard
         {
 
         }
-        /*
+
+        public String LeftPath
+        {
+            get
+            {
+                return this.LeftVideoPath.Text;
+            }
+        }
+
+        public String RightPath
+        {
+            get
+            {
+                return this.RightVideoPath.Text;
+            }
+        }
+
+        public String DataPath
+        {
+            get
+            {
+                return this.BiometricDataPath.Text;
+            }
+        }
+        
+ 
+
+
         private void LeftVideoBrowse_Click(object sender, RoutedEventArgs e)
         {
-            Stream checkStream = null;
-            OpenFileDialog dlg = new OpenFileDialog();
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            // Set filter for file extension and default file extension
+            dlg.DefaultExt = ".txt";
             dlg.Filter = "All Supported File Types(*.mp3,*.wav,*.mpeg,*.wmv,*.avi)|*.mp3;*.wav;*.mpeg;*.wmv;*.avi";
-            // Show open file dialog box 
-            if ((bool)dlg.ShowDialog())
+
+            // Display OpenFileDialog by calling ShowDialog method
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Get the selected file name and display in a TextBox
+            if (result == true)
             {
-                try
-                {
-                    // check if something is selected
-                    if ((checkStream = dlg.OpenFile()) != null)
-                    {
-                        LeftVideo.Source = new Uri(dlg.FileName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
-                }
+                // Open document
+                string filename = dlg.FileName;
+                LeftVideoPath.Text = filename;
             }
         }
 
         private void RightVideoBrowse_Click(object sender, RoutedEventArgs e)
         {
-            Stream checkStream = null;
-            OpenFileDialog dlg = new OpenFileDialog();
-            Window MainWin = (Window)VisualTreeHelper.GetParent(this);
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            // Set filter for file extension and default file extension
+            dlg.DefaultExt = ".txt";
             dlg.Filter = "All Supported File Types(*.mp3,*.wav,*.mpeg,*.wmv,*.avi)|*.mp3;*.wav;*.mpeg;*.wmv;*.avi";
-            // Show open file dialog box 
-            if ((bool)dlg.ShowDialog())
+
+            // Display OpenFileDialog by calling ShowDialog method
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Get the selected file name and display in a TextBox
+            if (result == true)
             {
-                try
-                {
-                    // check if something is selected
-                    if ((checkStream = dlg.OpenFile()) != null)
-                    {
-                        RightVideo.Source = new Uri(dlg.FileName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
-                }
+                // Open document
+                string filename = dlg.FileName;
+                RightVideoPath.Text = filename;
             }
         }
-        
-        public static Window GetWindowRef_ByName(string strWindowName)
-        {
-            foreach (Window win in Application.Current.Windows)
-                if (win.Name == strWindowName) return win;
 
-            //Got here? Then the window hasn't been loaded.
-            return null;
+        private void BiometricDataBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            // Set filter for file extension and default file extension
+            dlg.DefaultExt = ".txt";
+            dlg.Filter = "All Supported File Types(*.mp3,*.wav,*.mpeg,*.wmv,*.avi)|*.mp3;*.wav;*.mpeg;*.wmv;*.avi";
+
+            // Display OpenFileDialog by calling ShowDialog method
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Get the selected file name and display in a TextBox
+            if (result == true)
+            {
+                // Open document
+                string filename = dlg.FileName;
+                BiometricDataPath.Text = filename;
+            }
         }
-         * */
+
+        private void OkButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            this.Close();
+        }
     }
 }

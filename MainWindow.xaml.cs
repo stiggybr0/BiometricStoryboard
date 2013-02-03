@@ -34,6 +34,18 @@ namespace BiometricStoryboard
         public delegate void RightTimerTick();
         RightTimerTick RightTick;
 
+        bool LeftIsPlaying = false;
+        bool RightIsPlaying = false;
+
+        string LeftSec, LeftMin, LeftHours;
+        string RightSec, RightMin, RightHours;
+        string LeftPath, RightPath, DataPath;
+
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         public MainWindow()
         {
@@ -49,32 +61,90 @@ namespace BiometricStoryboard
             RightTimer.Tick += new EventHandler(RightTimer_Tick);
             RightTick = new RightTimerTick(RightChangeStatus);
         }
-        bool LeftIsPlaying;
-        bool RightIsPlaying;
-        private void playButtonClick(object sender, RoutedEventArgs e)
+
+        void LeftTimer_Tick(object sender, EventArgs e)
         {
-            LeftVideo.Play();
-            RightVideo.Play();
-            LeftIsPlaying = true;
-            RightIsPlaying = true;
+            Dispatcher.Invoke(LeftTick);
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        void RightTimer_Tick(object sender, EventArgs e)
         {
-
-        }
-       
-
-        //turn volume up-down
-        private void LeftVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            LeftVideo.Volume = LeftVolumeSlider.Value;
+            Dispatcher.Invoke(RightTick);
         }
 
-        private void RightVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        void LeftChangeStatus()
         {
-            RightVideo.Volume = RightVolumeSlider.Value;
+            if (LeftIsPlaying)
+            {
+
+                #region customizeTime
+                if (LeftVideo.Position.Seconds < 10)
+                    LeftSec = "0" + LeftVideo.Position.Seconds.ToString();
+                else
+                    LeftSec = LeftVideo.Position.Seconds.ToString();
+
+
+                if (LeftVideo.Position.Minutes < 10)
+                    LeftMin = "0" + LeftVideo.Position.Minutes.ToString();
+                else
+                    LeftMin = LeftVideo.Position.Minutes.ToString();
+
+                if (LeftVideo.Position.Hours < 10)
+                    LeftHours = "0" + LeftVideo.Position.Hours.ToString();
+                else
+                    LeftHours = LeftVideo.Position.Hours.ToString();
+
+                #endregion customizeTime
+
+                LeftSeekSlider.Value = LeftVideo.Position.TotalMilliseconds;
+                LeftProgressBar.Value = LeftVideo.Position.TotalMilliseconds;
+
+                if (LeftVideo.Position.Hours == 0)
+                {
+                    LeftCurrentTimeTextBlock.Text = LeftMin + ":" + LeftSec;
+                }
+                else
+                {
+                    LeftCurrentTimeTextBlock.Text = LeftHours + ":" + LeftMin + ":" + LeftSec;
+                }
+            }
         }
+
+        void RightChangeStatus()
+        {
+            if (RightIsPlaying)
+            {
+                #region customizeTime
+                if (RightVideo.Position.Seconds < 10)
+                    RightSec = "0" + RightVideo.Position.Seconds.ToString();
+                else
+                    RightSec = RightVideo.Position.Seconds.ToString();
+                if (RightVideo.Position.Minutes < 10)
+                    RightMin = "0" + RightVideo.Position.Minutes.ToString();
+                else
+                    RightMin = RightVideo.Position.Minutes.ToString();
+
+                if (RightVideo.Position.Hours < 10)
+                    RightHours = "0" + RightVideo.Position.Hours.ToString();
+                else
+                    RightHours = RightVideo.Position.Hours.ToString();
+
+                #endregion customizeTime
+
+                RightSeekSlider.Value = RightVideo.Position.TotalMilliseconds;
+                RightProgressBar.Value = RightVideo.Position.TotalMilliseconds;
+
+                if (RightVideo.Position.Hours == 0)
+                {
+                    RightCurrentTimeTextBlock.Text = RightMin + ":" + RightSec;
+                }
+                else
+                {
+                    RightCurrentTimeTextBlock.Text = RightHours + ":" + RightMin + ":" + RightSec;
+                }
+            }
+        }
+
 
         private void LeftBrowse_Click(object sender, RoutedEventArgs e)
         {
@@ -98,7 +168,7 @@ namespace BiometricStoryboard
                 }
             }
         }
-        
+
         private void RightBrowse_Click(object sender, RoutedEventArgs e)
         {
             Stream checkStream = null;
@@ -122,94 +192,223 @@ namespace BiometricStoryboard
             }
         }
 
-        void LeftChangeStatus()
+        public void LeftVideo_MediaOpened(object sender, RoutedEventArgs e)
         {
-            if (LeftIsPlaying)
-            {
-                string sec, min, hours;
-
-                #region customizeTime
-                if (LeftVideo.Position.Seconds < 10)
-                    sec = "0" + LeftVideo.Position.Seconds.ToString();
-                else
-                    sec = LeftVideo.Position.Seconds.ToString();
-
-
-                if (LeftVideo.Position.Minutes < 10)
-                    min = "0" + LeftVideo.Position.Minutes.ToString();
-                else
-                    min = LeftVideo.Position.Minutes.ToString();
-
-                if (LeftVideo.Position.Hours < 10)
-                    hours = "0" + LeftVideo.Position.Hours.ToString();
-                else
-                    hours = LeftVideo.Position.Hours.ToString();
-
-                #endregion customizeTime
-
-                LeftSeekSlider.Value = LeftVideo.Position.TotalMilliseconds;
-                LeftProgressBar.Value = LeftVideo.Position.TotalMilliseconds;
-
-                if (LeftVideo.Position.Hours == 0)
-                {
-                    LeftCurrentTimeTextBlock.Text = min + ":" + sec;
-                }
-                else
-                {
-                    LeftCurrentTimeTextBlock.Text = hours + ":" + min + ":" + sec;
-                }
-            }
+            LeftTimer.Start();
+            LeftIsPlaying = true;
+            LeftOpenMedia();
         }
 
-        void RightChangeStatus()
+        public void RightVideo_MediaOpened(object sender, RoutedEventArgs e)
         {
-            if (LeftIsPlaying)
+            RightTimer.Start();
+            RightIsPlaying = true;
+            RightOpenMedia();
+        }
+
+        public void LeftOpenMedia()
+        {
+            LeftInitializePropertyValues();
+            try
             {
-                string sec, min, hours;
-
                 #region customizeTime
-                if (LeftVideo.Position.Seconds < 10)
-                    sec = "0" + LeftVideo.Position.Seconds.ToString();
+                if (LeftVideo.NaturalDuration.TimeSpan.Seconds < 10)
+                    LeftSec = "0" + LeftVideo.Position.Seconds.ToString();
                 else
-                    sec = LeftVideo.Position.Seconds.ToString();
+                    LeftSec = LeftVideo.NaturalDuration.TimeSpan.Seconds.ToString();
 
-
-                if (LeftVideo.Position.Minutes < 10)
-                    min = "0" + LeftVideo.Position.Minutes.ToString();
+                if (LeftVideo.NaturalDuration.TimeSpan.Minutes < 10)
+                    LeftMin = "0" + LeftVideo.NaturalDuration.TimeSpan.Minutes.ToString();
                 else
-                    min = LeftVideo.Position.Minutes.ToString();
+                    LeftMin = LeftVideo.NaturalDuration.TimeSpan.Minutes.ToString();
 
-                if (LeftVideo.Position.Hours < 10)
-                    hours = "0" + LeftVideo.Position.Hours.ToString();
+                if (LeftVideo.NaturalDuration.TimeSpan.Hours < 10)
+                    LeftHours = "0" + LeftVideo.NaturalDuration.TimeSpan.Hours.ToString();
                 else
-                    hours = LeftVideo.Position.Hours.ToString();
+                    LeftHours = LeftVideo.NaturalDuration.TimeSpan.Hours.ToString();
+
+                if (LeftVideo.NaturalDuration.TimeSpan.Hours == 0)
+                {
+
+                    LeftEndTimeTextBlock.Text = LeftMin + ":" + LeftSec;
+                }
+                else
+                {
+                    LeftEndTimeTextBlock.Text = LeftHours + ":" + LeftMin + ":" + LeftSec;
+                }
 
                 #endregion customizeTime
+            }
+            catch { }
+            string path = LeftVideo.Source.LocalPath.ToString();
 
-                RightSeekSlider.Value = LeftVideo.Position.TotalMilliseconds;
-                RightProgressBar.Value = LeftVideo.Position.TotalMilliseconds;
+            double duration = LeftVideo.NaturalDuration.TimeSpan.TotalMilliseconds;
+            LeftSeekSlider.Maximum = duration;
+            LeftProgressBar.Maximum = duration;
 
-                if (LeftVideo.Position.Hours == 0)
+            LeftVideo.Volume = LeftVolumeSlider.Value;
+            //LeftVideo.SpeedRatio = LeftSpeedRatioSlider.Value;
+            LeftVideo.ScrubbingEnabled = true;
+
+            LeftVolumeSlider.ValueChanged += new RoutedPropertyChangedEventHandler<double>(LeftVolumeSlider_ValueChanged);
+            //speedRatioSlider.ValueChanged += new RoutedPropertyChangedEventHandler<double>(speedRatioSlider_ValueChanged);
+        }
+        public void RightOpenMedia()
+        {
+            RightInitializePropertyValues();
+            try
+            {
+                #region customizeTime
+                if (RightVideo.NaturalDuration.TimeSpan.Seconds < 10)
+                    RightSec = "0" + RightVideo.Position.Seconds.ToString();
+                else
+                    RightSec = RightVideo.NaturalDuration.TimeSpan.Seconds.ToString();
+
+                if (RightVideo.NaturalDuration.TimeSpan.Minutes < 10)
+                    RightMin = "0" + RightVideo.NaturalDuration.TimeSpan.Minutes.ToString();
+                else
+                    RightMin = RightVideo.NaturalDuration.TimeSpan.Minutes.ToString();
+
+                if (RightVideo.NaturalDuration.TimeSpan.Hours < 10)
+                    RightHours = "0" + RightVideo.NaturalDuration.TimeSpan.Hours.ToString();
+                else
+                    RightHours = RightVideo.NaturalDuration.TimeSpan.Hours.ToString();
+
+                if (RightVideo.NaturalDuration.TimeSpan.Hours == 0)
                 {
-                    RightCurrentTimeTextBlock.Text = min + ":" + sec;
+
+                    RightEndTimeTextBlock.Text = RightMin + ":" + RightSec;
                 }
                 else
                 {
-                    RightCurrentTimeTextBlock.Text = hours + ":" + min + ":" + sec;
+                    RightEndTimeTextBlock.Text = RightHours + ":" + RightMin + ":" + RightSec;
                 }
+
+                #endregion customizeTime
             }
+            catch { }
+            string path = RightVideo.Source.LocalPath.ToString();
+
+            double duration = RightVideo.NaturalDuration.TimeSpan.TotalMilliseconds;
+            RightSeekSlider.Maximum = duration;
+            RightProgressBar.Maximum = duration;
+
+            RightVideo.Volume = RightVolumeSlider.Value;
+            //RightVideo.SpeedRatio = speedRatioSlider.Value;
+            RightVideo.ScrubbingEnabled = true;
+
+            RightVolumeSlider.ValueChanged += new RoutedPropertyChangedEventHandler<double>(RightVolumeSlider_ValueChanged);
+            //speedRatioSlider.ValueChanged += new RoutedPropertyChangedEventHandler<double>(speedRatioSlider_ValueChanged);
         }
+
+        private void LeftVideo_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            LeftVideo.Stop();
+            LeftVolumeSlider.ValueChanged -= new RoutedPropertyChangedEventHandler<double>(LeftVolumeSlider_ValueChanged);
+        }
+        private void RightVideo_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            RightVideo.Stop();
+            RightVolumeSlider.ValueChanged -= new RoutedPropertyChangedEventHandler<double>(LeftVolumeSlider_ValueChanged);
+        }
+
+        void LeftInitializePropertyValues()
+        {
+            LeftVideo.Volume = (double)LeftVolumeSlider.Value;
+            //LeftVideo.SpeedRatio = (double)speedRatioSlider.Value;
+        }
+
+        void RightInitializePropertyValues()
+        {
+            RightVideo.Volume = (double)RightVolumeSlider.Value;
+            //mediaElement.SpeedRatio = (double)speedRatioSlider.Value;
+        }
+
+        //left
+        private void LeftSeekSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)LeftSeekSlider.Value);
+            LeftChangePosition(ts);
+        }
+
+        //right
+        private void RightSeekSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)RightSeekSlider.Value);
+            RightChangePosition(ts);
+        }
+
+        //mouse down on slide bar in order to seek
+        private void LeftSeekSlider_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            LeftIsDragging = true;
+            LeftIsPlaying = true;
+        }
+
+        //mouse down on slide bar in order to seek
+        private void RightSeekSlider_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            RightIsDragging = true;
+            RightIsPlaying = true;
+        }
+
+
+        private void LeftSeekSlider_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (LeftIsDragging)
+            {
+                TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)LeftSeekSlider.Value);
+                LeftChangePosition(ts);
+                LeftIsPlaying = true;
+            }
+            LeftIsDragging = false;
+        }
+
+        private void RightSeekSlider_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (RightIsDragging)
+            {
+                TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)RightSeekSlider.Value);
+                RightChangePosition(ts);
+                RightIsPlaying = true;
+            }
+            RightIsDragging = false;
+        }
+
+
+        //change position of the file
+        void LeftChangePosition(TimeSpan ts)
+        {
+            LeftVideo.Position = ts;
+        }
+
+        //change position of the file
+        void RightChangePosition(TimeSpan ts)
+        {
+            RightVideo.Position = ts;
+        }
+        
+
+        private void playButtonClick(object sender, RoutedEventArgs e)
+        {
+            LeftVideo.Play();
+            RightVideo.Play();
+            LeftIsPlaying = true;
+            RightIsPlaying = true;
+            LeftTimer.Start();
+            RightTimer.Start();
+        }
+
 
         private void PauseButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            
             if (LeftIsPlaying)
             {
                 try
                 {
                     LeftVideo.Pause();
                     LeftIsPlaying = false;
+                    LeftTimer.Stop();
                 }
                 catch (Exception ex)
                 {
@@ -222,6 +421,7 @@ namespace BiometricStoryboard
                 {
                     RightVideo.Pause();
                     RightIsPlaying = false;
+                    RightTimer.Stop();
                 }
                 catch (Exception ex)
                 {
@@ -237,9 +437,12 @@ namespace BiometricStoryboard
             {
                 try
                 {
-
                     LeftVideo.Stop();
                     LeftIsPlaying = false;
+                    LeftTimer.Stop();
+                    LeftSeekSlider.Value = 0;
+                    LeftProgressBar.Value = 0;
+                    LeftCurrentTimeTextBlock.Text = "00:00";
                 }
                 catch (Exception ex)
                 {
@@ -252,6 +455,10 @@ namespace BiometricStoryboard
                 {
                     RightVideo.Stop();
                     RightIsPlaying = false;
+                    RightTimer.Stop();
+                    RightSeekSlider.Value = 0;
+                    RightProgressBar.Value = 0;
+                    RightCurrentTimeTextBlock.Text = "00:00";
                 }
                 catch (Exception ex)
                 {
@@ -260,132 +467,38 @@ namespace BiometricStoryboard
             }
         }
 
+        //turn volume up-down
+        private void LeftVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            LeftVideo.Volume = LeftVolumeSlider.Value;
+        }
+
+        private void RightVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            RightVideo.Volume = RightVolumeSlider.Value;
+        }      
+
         private void OpenMediaButton_Click(object sender, RoutedEventArgs e)
         {
-            var OpenMedia = new OpenMediaWindow();
+            OpenMediaWindow OpenMedia = new OpenMediaWindow();
             OpenMedia.ShowDialog();
-        }
-
-        public void LeftVideo_MediaOpened(object sender, RoutedEventArgs e)
-        {
-            LeftTimer.Start();
-            LeftIsPlaying = true;
-            LeftOpenMedia();
-        }
-        public void RightVideo_MediaOpened(object sender, RoutedEventArgs e)
-        {
-            RightTimer.Start();
-            RightIsPlaying = true;
-            RightOpenMedia();
-        }
-        void LeftTimer_Tick(object sender, EventArgs e)
-        {
-            Dispatcher.Invoke(LeftTick);
-        }
-        void RightTimer_Tick(object sender, EventArgs e)
-        {
-            Dispatcher.Invoke(RightTick);
-        }
-        private void LeftVideo_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            LeftVideo.Stop();
-            LeftVolumeSlider.ValueChanged -= new RoutedPropertyChangedEventHandler<double>(LeftVolumeSlider_ValueChanged);
-        }
-        private void RightVideo_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            RightVideo.Stop();
-            RightVolumeSlider.ValueChanged -= new RoutedPropertyChangedEventHandler<double>(LeftVolumeSlider_ValueChanged);
-        }
-
-        public void LeftOpenMedia()
-        {
- 
-        }
-        public void RightOpenMedia()
-        {
- 
-        }
-        public MediaElement getLeftVideo
-        {
-            get
+            if ((bool)OpenMedia.DialogResult)
             {
-                return LeftVideo;
+                LeftPath = OpenMedia.LeftPath;
+                RightPath = OpenMedia.RightPath;
+                DataPath = OpenMedia.DataPath;
+                LeftVideo.Source = new Uri(LeftPath);
+                RightVideo.Source = new Uri(RightPath);
             }
         }
-        public MediaElement getRightVideo
-        {
-            get
-            {
-                return RightVideo;
-            }
-        }
+        
 
-
-
-        //left
-        private void LeftSeekSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)LeftSeekSlider.Value);
-
-            LeftChangePosition(ts);
-        }
-
-        //mouse down on slide bar in order to seek
-        private void LeftSeekSlider_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            LeftIsDragging = true;
-        }
-
-        private void LeftSeekSlider_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (LeftIsDragging)
-            {
-                TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)LeftSeekSlider.Value);
-                LeftChangePosition(ts);
-            }
-            LeftIsDragging = false;
-        }
-
-        //change position of the file
-        void LeftChangePosition(TimeSpan ts)
-        {
-            LeftVideo.Position = ts;
-        }
-
-        //right
-        private void RightSeekSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)RightSeekSlider.Value);
-
-            RightChangePosition(ts);
-        }
-
-        //mouse down on slide bar in order to seek
-        private void RightSeekSlider_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            RightIsDragging = true;
-        }
-
-        private void RightSeekSlider_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (RightIsDragging)
-            {
-                TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)RightSeekSlider.Value);
-                RightChangePosition(ts);
-            }
-            RightIsDragging = false;
-        }
-
-        //change position of the file
-        void RightChangePosition(TimeSpan ts)
-        {
-            RightVideo.Position = ts;
-        }
 
         private void MakeNoteButton_Click(object sender, RoutedEventArgs e)
         {
             var MakeNote = new NoteWindow();
             MakeNote.ShowDialog();
-        }
+            
+        }        
     }
 }
