@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Drawing;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -15,6 +16,11 @@ using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Win32;
 using System.Windows.Threading;
+using System.Xml;
+using System.Collections;
+using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace BiometricStoryboard
 {
@@ -41,6 +47,15 @@ namespace BiometricStoryboard
         string RightSec, RightMin, RightHours;
         string LeftPath, RightPath, DataPath;
 
+        string IomData, NoteString, OutputNotePath;
+        ArrayList NoteList = new ArrayList();
+
+        ArrayList TSList = new ArrayList();
+        ArrayList EDRList = new ArrayList();
+        ArrayList DETList = new ArrayList();
+        ArrayList RateList = new ArrayList();
+        ArrayList LabList = new ArrayList();
+        ArrayList COHList = new ArrayList();
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -145,7 +160,7 @@ namespace BiometricStoryboard
             }
         }
 
-
+        /*
         private void LeftBrowse_Click(object sender, RoutedEventArgs e)
         {
             Stream checkStream = null;
@@ -190,7 +205,7 @@ namespace BiometricStoryboard
                     MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
                 }
             }
-        }
+        }*/
 
         public void LeftVideo_MediaOpened(object sender, RoutedEventArgs e)
         {
@@ -412,7 +427,7 @@ namespace BiometricStoryboard
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: Left Video Pause Error" + ex.Message);
+                    System.Windows.MessageBox.Show("Error: Left Video Pause Error" + ex.Message);
                 }
             }
             if (RightIsPlaying)
@@ -425,7 +440,7 @@ namespace BiometricStoryboard
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: Right Video Pause Error" + ex.Message);
+                    System.Windows.MessageBox.Show("Error: Right Video Pause Error" + ex.Message);
                 }
 
             }
@@ -446,7 +461,7 @@ namespace BiometricStoryboard
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: Left Video Stop Error" + ex.Message);
+                    System.Windows.MessageBox.Show("Error: Left Video Stop Error" + ex.Message);
                 }
             }
             if (RightIsPlaying == true)
@@ -462,7 +477,7 @@ namespace BiometricStoryboard
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: Right Video Stop Error" + ex.Message);
+                    System.Windows.MessageBox.Show("Error: Right Video Stop Error" + ex.Message);
                 }
             }
         }
@@ -489,6 +504,53 @@ namespace BiometricStoryboard
                 DataPath = OpenMedia.DataPath;
                 LeftVideo.Source = new Uri(LeftPath);
                 RightVideo.Source = new Uri(RightPath);
+                IomData = System.IO.File.ReadAllText(@"F:\Users\Andy\Dropbox\Current Projects\Senior Proj\grapher-2013-1-4-14-13-24.dat");
+                char[] delimiterChars = { ' ', ',', '[', ']', '\n', '\t', '\r' };
+
+                string[] words = IomData.Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
+                
+
+                int count = 0;
+                for (int i = 5; i < words.Length; i++)
+                {
+                    String s = words[i];
+                    if (!(s.Equals("#TS:") || s.Equals("#EDR:") || s.Equals("#DETECT:") || s.Equals("#rate:") || s.Equals("#Lable:") || s.Equals("#coh:")))
+                    {
+                        if (count == 0)
+                        {
+                            float fval = System.Convert.ToSingle(s);
+                            float seconds = fval / (float)1000.00;
+                            TSList.Add(fval);
+                        }
+                        else if (count == 1)
+                        {
+                            float fval = System.Convert.ToSingle(s);
+                            EDRList.Add(fval);
+                        }
+                        else if (count == 2)
+                        {
+                            float fval = System.Convert.ToSingle(s);
+                            DETList.Add(fval);
+                        }
+                        else if (count == 3)
+                        {
+                            float fval = System.Convert.ToSingle(s);
+                            RateList.Add(fval);
+                        }
+                        else if (count == 4)
+                        {
+                            LabList.Add(s);
+                        }
+                        else if (count == 5)
+                        {
+                            float fval = System.Convert.ToSingle(s);
+                            COHList.Add(fval);
+                            count = -1;
+                        }
+                        count++;
+                    }
+                }
+                FillChart("Biometric Data", 0, 60, TSList, EDRList, this.BiometricChart);
             }
         }
         
@@ -498,7 +560,98 @@ namespace BiometricStoryboard
         {
             var MakeNote = new NoteWindow();
             MakeNote.ShowDialog();
+            if ((bool)MakeNote.DialogResult)
+            {
+                NoteString = MakeNote.NoteData;
+                NoteList.Add(NoteString);
+            }
+        }
+
+        private void SaveMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "Note";
+            dlg.DefaultExt = ".xml";
+            dlg.Filter = "XML files (.xml)|*.xml";
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                OutputNotePath = dlg.FileName;
+            }
+            using (XmlWriter writer = XmlWriter.Create(OutputNotePath))
+            {
+                writer.WriteStartDocument();
+                writer.WriteStartElement("Notes");
+                foreach (String s in NoteList)
+                {
+                    writer.WriteStartElement("Note");
+                    writer.WriteElementString("Content", s);
+                    writer.WriteEndElement();
+
+                }
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+            }
+        }
+
+        /*
+
+        private void Load_BiometricChart(object sender, EventArgs e)
+        {
+            float[] xvalues;
+            float[] yvalues;
             
-        }        
+
+            
+        }
+
+        /// <summary>
+        /// Load data from a file (TODO)
+        /// </summary>
+        /// <param name="xvalues">this array of x values for the chart will be instantiated and initialized</param>
+        /// <param name="yvalues">this array of y values for the chart will be instantiated and initialized</param>
+        public static void LoadData(out ArrayList xvalues, out ArrayList yvalues)
+        {
+            Random rnd = new Random();
+            int npoints = 100;
+            xvalues = new float[npoints];
+            yvalues = new float[npoints];
+
+            float y = rnd.Next(0, 10);
+            for (int q = 0; q < npoints; q++)
+            {
+                y += rnd.Next(3) - 1;
+                xvalues[q] = q;
+                yvalues[q] = y;
+            }
+        }
+        */
+        /// <summary>
+        /// Fills in a chart of your choice with a single XY line, populated with the xy values you specify.
+        /// </summary>
+        public void FillChart(string seriesLabel, int indexStart, int indexEnd, ArrayList xvalues, ArrayList yvalues, System.Windows.Controls.DataVisualization.Charting.Chart chart)
+        {
+            chart.Series.Clear();
+
+            Series series = new Series(seriesLabel);
+           // Series series = chart.Series.Add(seriesLabel);
+            series.SetDefault(true);
+            series.Enabled = true;
+            series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series.Color = System.Drawing.Color.Blue;
+            series.BorderWidth = 3;
+           // chart.Visible = true;
+
+            
+            for (int q = indexStart; q < indexEnd; q++)
+            {
+                series.Points.AddXY(xvalues[q], yvalues[q]);
+            }
+         
+           // chart.Show();
+        }
+
+
+
     }
 }

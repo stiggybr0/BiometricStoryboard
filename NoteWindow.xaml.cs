@@ -22,5 +22,23 @@ namespace BiometricStoryboard
         {
             InitializeComponent();
         }
+        public String NoteData
+        {
+            get
+            {
+                return this.NoteTextBox.Text;
+            }
+        }
+
+        private void OkButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            this.Close();
+        }
     }
 }
