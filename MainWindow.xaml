@@ -50,6 +50,9 @@
         <Slider PreviewMouseLeftButtonUp="LeftSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="LeftSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="LeftSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="151,371,0,0" x:Name="LeftSeekSlider" VerticalAlignment="Top" Width="400" Background="{x:Null}" />
         <Slider PreviewMouseLeftButtonUp="RightSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="RightSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="RightSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="791,371,0,0" x:Name="RightSeekSlider" VerticalAlignment="Top" Width="402" Background="{x:Null}" />
         <d3:ChartPlotter Margin="0,434,0,0" x:Name="Plotter">
+            <d3:HorizontalAxis Name="TimeAxis" Content="Time"></d3:HorizontalAxis>
+            <d3:VerticalAxis Name="DataAxis" Content="Data"></d3:VerticalAxis>
+            <d3:Header FontFamily="Arial" Content="GSR Data"/>
         </d3:ChartPlotter>
         
     </Grid>
