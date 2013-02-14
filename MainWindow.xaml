@@ -4,15 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:local ="clr-namespace:BiometricStoryboard"
+        xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1263.2" Loaded="Window_Loaded" ResizeMode="NoResize"
         >
     <Window.Resources>
-        <local:MainWindowVM x:Key="VM"></local:MainWindowVM>
+        <d3:TickToDateLabelProvider x:Key="tickToDate"/>
     </Window.Resources>
 
-    <Grid x:Name="MediaGrid"  Background="#FF001528" Margin="0,0,-3.2,0.4">
+    <Grid x:Name="MediaGrid"  Background="#FF001528" Margin="0,0,-3,-2">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
@@ -47,17 +49,10 @@
         <ProgressBar Height="22" HorizontalAlignment="Right" Margin="0,370,60.6,0" x:Name="RightProgressBar" VerticalAlignment="Top" Width="402" Foreground="#FF5F1718" Background="#FF5F5F5F" />
         <Slider PreviewMouseLeftButtonUp="LeftSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="LeftSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="LeftSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="151,371,0,0" x:Name="LeftSeekSlider" VerticalAlignment="Top" Width="400" Background="{x:Null}" />
         <Slider PreviewMouseLeftButtonUp="RightSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="RightSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="RightSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="791,371,0,0" x:Name="RightSeekSlider" VerticalAlignment="Top" Width="402" Background="{x:Null}" />
-        <chartingToolkit:Chart HorizontalAlignment="Left" Margin="0,392,0,-13.4" Width="1260" Name="BiometricChart">
-            <chartingToolkit:Chart.Axes>
-                <chartingToolkit:LinearAxis Orientation="X"></chartingToolkit:LinearAxis>
-                <chartingToolkit:LinearAxis Orientation="Y"></chartingToolkit:LinearAxis>
-            </chartingToolkit:Chart.Axes>
-            <chartingToolkit:LineSeries DependentValueBinding="{Binding Path=Value}" IndependentValueBinding="{Binding Path=Key}"  ItemsSource="{Binding Source={StaticResource VM}, Path=data}">
-                <chartingToolkit:LineSeries.Clip>
-                    <RectangleGeometry/>
-                </chartingToolkit:LineSeries.Clip>
-            </chartingToolkit:LineSeries>
-            
-        </chartingToolkit:Chart>
+        <d3:ChartPlotter Margin="0,434,0,0" x:Name="Plotter">
+        </d3:ChartPlotter>
+        
     </Grid>
+    
+
 </Window>

@@ -505,7 +505,8 @@ namespace BiometricStoryboard
                         count++;
                     }
                 }
-                FillChart("Biometric Data", 0, 60, TSList, EDRList, this.BiometricChart);
+                
+
             }
         }
         
