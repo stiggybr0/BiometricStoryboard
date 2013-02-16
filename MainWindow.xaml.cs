@@ -27,10 +27,14 @@ using Microsoft.Research.DynamicDataDisplay.PointMarkers;
 using System.ComponentModel;
 
 
+
 namespace BiometricStoryboard
 {
 
-    public partial class MainWindow : Window 
+
+   
+    public partial class MainWindow : Window
+
     {
         bool LeftIsDragging = false;
         bool RightIsDragging = false;
@@ -59,7 +63,6 @@ namespace BiometricStoryboard
         ArrayList RateList = new ArrayList();
         ArrayList LabList = new ArrayList();
         ArrayList COHList = new ArrayList();
-      
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -457,7 +460,7 @@ namespace BiometricStoryboard
             OpenMediaWindow OpenMedia = new OpenMediaWindow();
             OpenMedia.ShowDialog();
             if ((bool)OpenMedia.DialogResult)
-            {   
+            {
                 LeftPath = OpenMedia.LeftPath;
                 RightPath = OpenMedia.RightPath;
                 DataPath = OpenMedia.DataPath;
@@ -467,7 +470,6 @@ namespace BiometricStoryboard
                 char[] delimiterChars = { ' ', ',', '[', ']', '\n', '\t', '\r' };
 
                 string[] words = IomData.Split(delimiterChars, StringSplitOptions.RemoveEmptyEntries);
-
 
                 int count = 0;
                 for (int i = 5; i < words.Length; i++)
@@ -525,10 +527,8 @@ namespace BiometricStoryboard
             Plotter.AddLineGraph(TimeDataSource, new System.Windows.Media.Pen(System.Windows.Media.Brushes.Green, 2), new TrianglePointMarker { Size = 10.0, Pen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.Black, 2.0), Fill = System.Windows.Media.Brushes.GreenYellow },
             new Microsoft.Research.DynamicDataDisplay.PenDescription("edr data"));
             Plotter.Viewport.FitToView();
-            
-           
-
         }
+
 
 
         private void MakeNoteButton_Click(object sender, RoutedEventArgs e)
@@ -568,7 +568,6 @@ namespace BiometricStoryboard
                 writer.WriteEndDocument();
             }
         }
-
 
     }
 

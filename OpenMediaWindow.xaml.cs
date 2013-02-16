@@ -64,7 +64,6 @@ namespace BiometricStoryboard
             // Set filter for file extension and default file extension
             dlg.DefaultExt = ".txt";
             dlg.Filter = "All Supported File Types(*.mp3,*.wav,*.mpeg,*.wmv,*.avi,*.mp4)|*.mp3;*.wav;*.mpeg;*.wmv;*.avi;*.mp4";
-
             // Display OpenFileDialog by calling ShowDialog method
             Nullable<bool> result = dlg.ShowDialog();
 
@@ -83,6 +82,7 @@ namespace BiometricStoryboard
 
             // Set filter for file extension and default file extension
             dlg.DefaultExt = ".txt";
+
             dlg.Filter = "All Supported File Types(*.mp3,*.wav,*.mpeg,*.wmv,*.avi, *.mp4)|*.mp3;*.wav;*.mpeg;*.wmv;*.avi;*.mp4";
 
             // Display OpenFileDialog by calling ShowDialog method
