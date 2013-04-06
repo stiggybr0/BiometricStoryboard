@@ -525,7 +525,7 @@ namespace BiometricStoryboard
             EDRDataSource.SetYMapping(y => y);
             CompositeDataSource TimeDataSource = new CompositeDataSource(TimeStampSource, EDRDataSource);
             Plotter.AddLineGraph(TimeDataSource, new System.Windows.Media.Pen(System.Windows.Media.Brushes.Green, 2), new TrianglePointMarker { Size = 10.0, Pen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.Black, 2.0), Fill = System.Windows.Media.Brushes.GreenYellow },
-            new Microsoft.Research.DynamicDataDisplay.PenDescription("edr data"));
+            new Microsoft.Research.DynamicDataDisplay.PenDescription("GSR data"));
             Plotter.Viewport.FitToView();
         }
 
