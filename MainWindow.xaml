@@ -56,7 +56,7 @@
         </d3:ChartPlotter>
         <Slider HorizontalAlignment="Left" Margin="27,668,0,0" VerticalAlignment="Top" Width="1230"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,399,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.4,0.25" Width="112" Foreground="White">Choose data source:</TextBlock>
-        <ComboBox HorizontalAlignment="Left" Margin="122,399,0,0" VerticalAlignment="Top" x:Name="Sources" Width="155" SelectedItem="{Binding SelectedSource}">
+        <ComboBox HorizontalAlignment="Left" Margin="127,399,0,0" VerticalAlignment="Top" x:Name="Sources" Width="155" SelectedItem="{Binding SelectedSource}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <cm:ActionMessage MethodName="SourceChange"/>
