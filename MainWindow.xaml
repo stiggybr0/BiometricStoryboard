@@ -50,7 +50,7 @@
         <ProgressBar Height="22" HorizontalAlignment="Right" Margin="0,370,60.6,0" x:Name="RightProgressBar" VerticalAlignment="Top" Width="402" Foreground="#FF5F1718" Background="#FF5F5F5F" />
         <Slider PreviewMouseLeftButtonUp="LeftSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="LeftSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="LeftSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="151,371,0,0" x:Name="LeftSeekSlider" VerticalAlignment="Top" Width="400" Background="{x:Null}" />
         <Slider PreviewMouseLeftButtonUp="RightSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="RightSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="RightSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="791,371,0,0" x:Name="RightSeekSlider" VerticalAlignment="Top" Width="402" Background="{x:Null}" />
-        <d3:ChartPlotter Margin="0,422,3,26" x:Name="Plotter">
+        <d3:ChartPlotter Margin="0,422,3,26" x:Name="Plotter" MouseLeftButtonDown="Chart_MouseLeftButtonDown">
             <d3:HorizontalAxisTitle>Time (ms)</d3:HorizontalAxisTitle>
             <d3:VerticalAxisTitle>Data</d3:VerticalAxisTitle>
         </d3:ChartPlotter>
@@ -63,5 +63,6 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ComboBox>
+        <Button Content="Draw" HorizontalAlignment="Left" Name="DrawButton" Margin="888,392,0,0" VerticalAlignment="Top" Width="76" Height="30" Click="DrawButton_Click" />
     </Grid>
 </Window>

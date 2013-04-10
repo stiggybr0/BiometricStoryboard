@@ -25,6 +25,9 @@ using Microsoft.Research.DynamicDataDisplay.DataSources;
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.PointMarkers;
 using System.ComponentModel;
+using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
+using Microsoft.Research.DynamicDataDisplay.Charts.Navigation;
 
 
 
@@ -63,7 +66,9 @@ namespace BiometricStoryboard
         ArrayList RateList = new ArrayList();
         ArrayList LabList = new ArrayList();
         ArrayList COHList = new ArrayList();
-
+        Form button1Form = new Form();
+        CursorCoordinateGraph mouseTrack = new CursorCoordinateGraph();
+    
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -520,13 +525,16 @@ namespace BiometricStoryboard
 
             var TimeStampSource = new EnumerableDataSource<float>(TSList);
             var EDRDataSource = new EnumerableDataSource<float>(EDRList);
-
+            
             TimeStampSource.SetXMapping(x => x);
             EDRDataSource.SetYMapping(y => y);
             CompositeDataSource TimeDataSource = new CompositeDataSource(TimeStampSource, EDRDataSource);
             Plotter.AddLineGraph(TimeDataSource, new System.Windows.Media.Pen(System.Windows.Media.Brushes.Green, 2), new TrianglePointMarker { Size = 10.0, Pen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.Black, 2.0), Fill = System.Windows.Media.Brushes.GreenYellow },
             new Microsoft.Research.DynamicDataDisplay.PenDescription("GSR data"));
             Plotter.Viewport.FitToView();
+            Plotter.Children.Add(mouseTrack);
+            mouseTrack.ShowHorizontalLine = false;
+            mouseTrack.ShowVerticalLine = false;
         }
 
 
@@ -567,6 +575,54 @@ namespace BiometricStoryboard
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
             }
+        }
+
+
+
+        private void Chart_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        {
+            var transform = Plotter.Viewport.Transform;
+            System.Windows.Point mousePos = mouseTrack.Position;
+            var mouseScreenPosition = Mouse.GetPosition(Plotter.CentralGrid);
+            var mousePositionInData = mouseScreenPosition.ScreenToData(transform);
+            double xValue = mousePositionInData.X;
+            System.Diagnostics.Debug.WriteLine(mousePositionInData);
+        }
+
+
+
+        private void DrawButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            /*
+            button1Form.FormBorderStyle = FormBorderStyle.None;
+            button1Form.StartPosition = new FormStartPosition();
+            button1Form.Width = 60;
+            button1Form.Height = 25;    
+            button1Form.BackColor = System.Drawing.Color.Red;
+            button1Form.TransparencyKey = button1Form.BackColor;
+            System.Drawing.Pen myPen;
+            myPen = new System.Drawing.Pen(System.Drawing.Color.Red);
+            System.Drawing.Graphics formGraphics = button1Form.CreateGraphics();
+            formGraphics.DrawRectangle(myPen, 0, 0, 60, 20);
+            myPen.Dispose();
+            formGraphics.Dispose();
+            button1Form.ShowDialog();
+             * */
+            // get desktop window
+            /*
+            IntPtr desktopHwnd = GetDesktopWindow();
+            // Create a new pen.
+            Pen skyBluePen = new Pen(System.Drawing.Brushes.DeepSkyBlue);
+            // Set the pen's width.
+            skyBluePen.Width = 8.0F;
+            // Set the LineJoin property.
+            skyBluePen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
+            Graphics.FromHwnd(desktopHwnd).DrawRectangle(skyBluePen, x, y, width, height);
+            skyBluePen.Dispose();
+             * */
+
+
         }
 
     }
