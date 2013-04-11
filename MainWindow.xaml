@@ -19,21 +19,18 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
-        <Button Content="SnapShot" HorizontalAlignment="Left" Margin="648,392,0,0" VerticalAlignment="Top" Width="75" Height="30"/>
-        <Button Content="Export" HorizontalAlignment="Left" Margin="728,392,0,0" VerticalAlignment="Top" Width="75" Height="30"/>
-        <Button Content="Play" x:Name="PlayButton" Height="30" HorizontalAlignment="Left" Margin="418,392,0,0" VerticalAlignment="Top" Width="75" Click="playButtonClick" />
-        <Button Content="Stop" Height="30" HorizontalAlignment="Left" Margin="573,392,0,0" x:Name="StopButton" VerticalAlignment="Top" Width="75" Click="StopButton_Click" />
+        <Button Content="4" FontFamily="Marlett" FontSize="25" x:Name="PlayButton" Height="30" HorizontalAlignment="Left" Margin="418,392,0,0" VerticalAlignment="Top" Width="75" Click="playButtonClick" RenderTransformOrigin="0.675,0.428" />
+        <Button Content="g" FontFamily="Marlett" FontSize="20" Height="30" HorizontalAlignment="Left" Margin="573,392,0,0" x:Name="StopButton" VerticalAlignment="Top" Width="75" Click="StopButton_Click" />
         <Menu x:Name="File" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="50">
             <MenuItem Header="_File" RenderTransformOrigin="0.509,0.741" x:Name="FileMenu">
-                <MenuItem Header="_Open" HorizontalAlignment="Left" Width="145"/>
+                <MenuItem Header="_Open Media" HorizontalAlignment="Left" Width="145" x:Name="OpenMediaButton" Click="OpenMediaButton_Click"/>
                 <MenuItem Header="_Save" HorizontalAlignment="Left" Width="145"/>
                 <MenuItem Header="_Save As.." HorizontalAlignment="Left" Width="145" x:Name="SaveMenu" Click="SaveMenu_Click"/>
+                <MenuItem Header="Export" HorizontalAlignment="Left" Width="145"/>
                 <Separator HorizontalAlignment="Left" Width="145"/>
                 <MenuItem Header="_Exit" HorizontalAlignment="Left" Width="145"/>
             </MenuItem>
         </Menu>
-        <Button Content="Open Media" Height="30" HorizontalAlignment="Right" Margin="0,392,842,0" x:Name="OpenMediaButton" VerticalAlignment="Top" Width="82" Click="OpenMediaButton_Click" />
         <Slider Height="20" Margin="0,370,1163.2,0" x:Name="LeftVolumeSlider" VerticalAlignment="Top" ValueChanged="LeftVolumeSlider_ValueChanged" />
         <TextBlock Height="20" HorizontalAlignment="Left" Margin="100,370,0,0" x:Name="LeftCurrentTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Width="50" Foreground="White"/>
         <TextBlock Height="20" HorizontalAlignment="Left" Margin="740,370,0,0" x:Name="RightCurrentTimeTextBlock" Text="00:00s" VerticalAlignment="Top" Width="50" Foreground="White"/>
