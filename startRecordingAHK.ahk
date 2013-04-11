@@ -1,1 +1,1 @@
-MouseClick, right, 55, 233
+ControlClick, File, F:\Users\Andy\Dropbox\Current Projects\BiometricStoryboard\BiometricStoryboard\startRecordingAHK.ahk - Notepad++

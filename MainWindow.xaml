@@ -65,6 +65,6 @@
         </ComboBox>
         <Button Content="Draw" HorizontalAlignment="Left" Name="DrawButton" Margin="888,392,0,0" VerticalAlignment="Top" Width="76" Height="30" Click="DrawButton_Click" />
         <Button Content="Start Recording" HorizontalAlignment="Left" Margin="969,392,0,0" VerticalAlignment="Top" Width="92" Height="30" Name="StartRecordingButton" Click="StartRecordingButton_Click"/>
-        <Button Content="Stop Recording" HorizontalAlignment="Left" Margin="1066,392,0,0" VerticalAlignment="Top" Width="91" Height="30" Name="StopRecordingButton"/>
+        <Button Content="Stop Recording" HorizontalAlignment="Left" Margin="1066,392,0,0" VerticalAlignment="Top" Width="91" Height="30" Name="StopRecordingButton" Click="StopRecordingButton_Click"/>
     </Grid>
 </Window>
