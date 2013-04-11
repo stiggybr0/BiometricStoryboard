@@ -51,7 +51,7 @@
         <Slider PreviewMouseLeftButtonUp="LeftSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="LeftSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="LeftSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="151,371,0,0" x:Name="LeftSeekSlider" VerticalAlignment="Top" Width="400" Background="{x:Null}" />
         <Slider PreviewMouseLeftButtonUp="RightSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="RightSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="RightSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="791,371,0,0" x:Name="RightSeekSlider" VerticalAlignment="Top" Width="402" Background="{x:Null}" />
         <d3:ChartPlotter Margin="0,422,3,26" x:Name="Plotter" MouseLeftButtonDown="Chart_MouseLeftButtonDown">
-            <d3:HorizontalAxisTitle>Time (ms)</d3:HorizontalAxisTitle>
+            <d3:HorizontalAxisTitle>Time (s)</d3:HorizontalAxisTitle>
             <d3:VerticalAxisTitle>Data</d3:VerticalAxisTitle>
         </d3:ChartPlotter>
         <Slider HorizontalAlignment="Left" Margin="27,668,0,0" VerticalAlignment="Top" Width="1230"/>
@@ -64,5 +64,7 @@
             </i:Interaction.Triggers>
         </ComboBox>
         <Button Content="Draw" HorizontalAlignment="Left" Name="DrawButton" Margin="888,392,0,0" VerticalAlignment="Top" Width="76" Height="30" Click="DrawButton_Click" />
+        <Button Content="Start Recording" HorizontalAlignment="Left" Margin="969,392,0,0" VerticalAlignment="Top" Width="92" Height="30" Name="StartRecordingButton" Click="StartRecordingButton_Click"/>
+        <Button Content="Stop Recording" HorizontalAlignment="Left" Margin="1066,392,0,0" VerticalAlignment="Top" Width="91" Height="30" Name="StopRecordingButton"/>
     </Grid>
 </Window>

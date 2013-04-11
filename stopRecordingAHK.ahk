@@ -1,0 +1,1 @@
+MouseClick, right, 55, 233

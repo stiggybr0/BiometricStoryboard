@@ -28,6 +28,7 @@ using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using Microsoft.Research.DynamicDataDisplay.Charts.Navigation;
+using System.Diagnostics;
 
 
 
@@ -485,8 +486,8 @@ namespace BiometricStoryboard
                         if (count == 0)
                         {
                             float fval = System.Convert.ToSingle(s);
-                            float seconds = fval / (float)1000.00;
-                            TSList.Add(fval);
+                            float seconds = (float)((float)fval / (float)1000.00);
+                            TSList.Add(seconds);
                         }
                         else if (count == 1)
                         {
@@ -587,6 +588,13 @@ namespace BiometricStoryboard
             var mousePositionInData = mouseScreenPosition.ScreenToData(transform);
             double xValue = mousePositionInData.X;
             System.Diagnostics.Debug.WriteLine(mousePositionInData);
+            var MakeNote = new NoteWindow();
+            MakeNote.ShowDialog();
+            if ((bool)MakeNote.DialogResult)
+            {
+                NoteString = MakeNote.NoteData;
+                NoteList.Add(NoteString);
+            }
         }
 
 
@@ -624,6 +632,23 @@ namespace BiometricStoryboard
 
 
         }
+
+        private void StartRecordingButton_Click(object sender, RoutedEventArgs e)
+        {
+            Process proc = new Process();
+            proc.StartInfo.WorkingDirectory = @"F:\Users\Andy\Dropbox\Current Projects\BiometricStoryboard\BiometricStoryboard";
+            proc.StartInfo.FileName = @"F:\Users\Andy\Dropbox\Current Projects\BiometricStoryboard\BiometricStoryboard\startRecording.bat";
+            proc.Start();
+        }
+
+        private void StopRecordingButton_Click(object sender, RoutedEventArgs e)
+        {
+            Process proc = new Process();
+            proc.StartInfo.WorkingDirectory = @"F:\Users\Andy\Dropbox\Current Projects\BiometricStoryboard\BiometricStoryboard";
+            proc.StartInfo.FileName = @"F:\Users\Andy\Dropbox\Current Projects\BiometricStoryboard\BiometricStoryboard\stopRecording.bat";
+            proc.Start();
+        }
+
 
     }
 
