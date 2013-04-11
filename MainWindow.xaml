@@ -41,7 +41,7 @@
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="350" Margin="640,19,-2.4,0" VerticalAlignment="Top" Width="620" Background="Black"/>
         <MediaElement Stretch="Fill" HorizontalAlignment="Left" LoadedBehavior="Manual" Opacity="1" AllowDrop="True" IsMuted="False" Height="350" Margin="0,20,0,0" VerticalAlignment="Top" Width="620" x:Name="LeftVideo" MediaEnded="LeftVideo_MediaEnded" MediaOpened="LeftVideo_MediaOpened"/>
         <MediaElement Stretch="Fill" HorizontalAlignment="Right" LoadedBehavior="Manual" Opacity="1" AllowDrop="True" IsMuted="False" Height="350" Margin="0,20,1,0" VerticalAlignment="Top" Width="620" x:Name="RightVideo" MediaEnded="RightVideo_MediaEnded" MediaOpened="RightVideo_MediaOpened" OpacityMask="Black" />
-        <Button Content="Pause" HorizontalAlignment="Left" Margin="493,392,0,0" VerticalAlignment="Top" Width="75" Height="30" x:Name="PauseButton" Click="PauseButton_Click"/>
+        <Button Content="Pause" HorizontalAlignment="Left" Margin="494,392,0,0" VerticalAlignment="Top" Width="75" Height="30" x:Name="PauseButton" Click="PauseButton_Click"/>
         <Slider HorizontalAlignment="Left" Margin="640,370,0,0" VerticalAlignment="Top" Width="95" Height="20" x:Name="RightVolumeSlider"/>
         <ProgressBar Height="22" HorizontalAlignment="Right" Margin="0,370,702.6,0" x:Name="LeftProgressBar" VerticalAlignment="Top" Width="400" Foreground="#FF5F1718" Background="#FF5F5F5F" />
         <ProgressBar Height="22" HorizontalAlignment="Right" Margin="0,370,60.6,0" x:Name="RightProgressBar" VerticalAlignment="Top" Width="402" Foreground="#FF5F1718" Background="#FF5F5F5F" />
