@@ -42,6 +42,7 @@ namespace BiometricStoryboard
     {
         bool LeftIsDragging = false;
         bool RightIsDragging = false;
+        bool DataIsDragging = false;
 
         DispatcherTimer LeftTimer;
         public delegate void LeftTimerTick();
@@ -51,11 +52,17 @@ namespace BiometricStoryboard
         public delegate void RightTimerTick();
         RightTimerTick RightTick;
 
+        DispatcherTimer DataTimer;
+        public delegate void DataTimerTick();
+        DataTimerTick DataTick;
+
         bool LeftIsPlaying = false;
         bool RightIsPlaying = false;
+        bool DataIsPlaying = false;
 
         string LeftSec, LeftMin, LeftHours;
         string RightSec, RightMin, RightHours;
+        string DataSec, DataMin, DataHours;
         string LeftPath, RightPath, DataPath;
 
         string IomData, NoteString, OutputNotePath;
@@ -89,12 +96,24 @@ namespace BiometricStoryboard
             RightTimer.Interval = TimeSpan.FromSeconds(1);
             RightTimer.Tick += new EventHandler(RightTimer_Tick);
             RightTick = new RightTimerTick(RightChangeStatus);
+
+            DataTimer = new DispatcherTimer();
+            DataTimer.Interval = TimeSpan.FromSeconds(1);
+            DataTimer.Tick += new EventHandler(DataTimer_Tick);
+            DataTick = new DataTimerTick(DataChangeStatus);
         }
 
         void LeftTimer_Tick(object sender, EventArgs e)
+
         {
             Dispatcher.Invoke(LeftTick);
         }
+
+        void DataTimer_Tick(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(DataTick);
+        }
+
 
         void RightTimer_Tick(object sender, EventArgs e)
         {
@@ -174,6 +193,39 @@ namespace BiometricStoryboard
             }
         }
 
+        void DataChangeStatus()
+        {
+            if (LeftIsPlaying && RightIsPlaying)
+            {
+                #region customizeTime
+                if (RightVideo.Position.Seconds < 10)
+                    DataSec = "0" + RightVideo.Position.Seconds.ToString();
+                else
+                    DataSec = RightVideo.Position.Seconds.ToString();
+                if (RightVideo.Position.Minutes < 10)
+                    DataMin = "0" + RightVideo.Position.Minutes.ToString();
+                else
+                    DataMin = RightVideo.Position.Minutes.ToString();
+
+                if (RightVideo.Position.Hours < 10)
+                    DataHours = "0" + RightVideo.Position.Hours.ToString();
+                else
+                    DataHours = RightVideo.Position.Hours.ToString();
+
+                #endregion customizeTime
+
+                DataSeekSlider.Value = RightVideo.Position.TotalMilliseconds;
+                if (RightVideo.Position.Hours == 0)
+                {
+                    DataCurrentTimeTextBlock.Text = DataMin + ":" + DataSec;
+                }
+                else
+                {
+                    DataCurrentTimeTextBlock.Text = DataHours + ":" + DataMin + ":" + DataSec;
+                }
+            }
+        }
+
 
         public void LeftVideo_MediaOpened(object sender, RoutedEventArgs e)
         {
@@ -190,6 +242,7 @@ namespace BiometricStoryboard
         }
 
         public void LeftOpenMedia()
+
         {
             LeftInitializePropertyValues();
             try
@@ -261,10 +314,12 @@ namespace BiometricStoryboard
                 {
 
                     RightEndTimeTextBlock.Text = RightMin + ":" + RightSec;
+                    DataEndTimeTextBlock.Text = RightMin + ":" + RightSec;
                 }
                 else
                 {
                     RightEndTimeTextBlock.Text = RightHours + ":" + RightMin + ":" + RightSec;
+                    DataEndTimeTextBlock.Text = RightHours + ":" + RightMin + ":" + RightSec;
                 }
 
                 #endregion customizeTime
@@ -275,6 +330,7 @@ namespace BiometricStoryboard
             double duration = RightVideo.NaturalDuration.TimeSpan.TotalMilliseconds;
             RightSeekSlider.Maximum = duration;
             RightProgressBar.Maximum = duration;
+            DataSeekSlider.Maximum = duration;
 
             RightVideo.Volume = RightVolumeSlider.Value;
             //RightVideo.SpeedRatio = speedRatioSlider.Value;
@@ -296,6 +352,8 @@ namespace BiometricStoryboard
         }
 
         void LeftInitializePropertyValues()
+
+
         {
             LeftVideo.Volume = (double)LeftVolumeSlider.Value;
             //LeftVideo.SpeedRatio = (double)speedRatioSlider.Value;
@@ -358,6 +416,30 @@ namespace BiometricStoryboard
             RightIsDragging = false;
         }
 
+        private void DataSeekSlider_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DataIsDragging = true;
+        }
+
+        private void DataSeekSlider_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (DataIsDragging)
+            {
+                TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)DataSeekSlider.Value);
+                LeftChangePosition(ts);
+                RightChangePosition(ts);
+                RightIsPlaying = true;
+                LeftIsPlaying = true;
+            }
+            DataIsDragging = false;
+        }
+
+        private void DataSeekSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)DataSeekSlider.Value);
+            RightChangePosition(ts);
+            LeftChangePosition(ts);
+        }
 
         //change position of the file
         void LeftChangePosition(TimeSpan ts)
@@ -378,8 +460,11 @@ namespace BiometricStoryboard
             RightVideo.Play();
             LeftIsPlaying = true;
             RightIsPlaying = true;
+            DataIsPlaying = true;
+            
             LeftTimer.Start();
             RightTimer.Start();
+            DataTimer.Start();
         }
 
 
@@ -412,9 +497,24 @@ namespace BiometricStoryboard
                 }
 
             }
+            if (DataIsPlaying)
+            {
+                try
+                {
+                    
+                    DataIsPlaying = false;
+                    DataTimer.Stop();
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show("Error: Data Pause Error" + ex.Message);
+                }
+
+            }
         }
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
+
         {
             if (LeftIsPlaying == true)
             {
@@ -446,6 +546,21 @@ namespace BiometricStoryboard
                 catch (Exception ex)
                 {
                     System.Windows.MessageBox.Show("Error: Right Video Stop Error" + ex.Message);
+                }
+            }
+            if (DataIsPlaying == true)
+            {
+                try
+                {
+                 
+                    DataIsPlaying = false;
+                    DataTimer.Stop();
+                    DataSeekSlider.Value = 0;
+                    DataCurrentTimeTextBlock.Text = "00:00";
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show("Error: Data Stop Error" + ex.Message);
                 }
             }
         }
@@ -582,6 +697,8 @@ namespace BiometricStoryboard
 
         private void Chart_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
+            //bool shiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            
             var transform = Plotter.Viewport.Transform;
             System.Windows.Point mousePos = mouseTrack.Position;
             var mouseScreenPosition = Mouse.GetPosition(Plotter.CentralGrid);
@@ -595,43 +712,9 @@ namespace BiometricStoryboard
                 NoteString = MakeNote.NoteData;
                 NoteList.Add(NoteString);
             }
+            
         }
 
-
-
-        private void DrawButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            /*
-            button1Form.FormBorderStyle = FormBorderStyle.None;
-            button1Form.StartPosition = new FormStartPosition();
-            button1Form.Width = 60;
-            button1Form.Height = 25;    
-            button1Form.BackColor = System.Drawing.Color.Red;
-            button1Form.TransparencyKey = button1Form.BackColor;
-            System.Drawing.Pen myPen;
-            myPen = new System.Drawing.Pen(System.Drawing.Color.Red);
-            System.Drawing.Graphics formGraphics = button1Form.CreateGraphics();
-            formGraphics.DrawRectangle(myPen, 0, 0, 60, 20);
-            myPen.Dispose();
-            formGraphics.Dispose();
-            button1Form.ShowDialog();
-             * */
-            // get desktop window
-            /*
-            IntPtr desktopHwnd = GetDesktopWindow();
-            // Create a new pen.
-            Pen skyBluePen = new Pen(System.Drawing.Brushes.DeepSkyBlue);
-            // Set the pen's width.
-            skyBluePen.Width = 8.0F;
-            // Set the LineJoin property.
-            skyBluePen.LineJoin = System.Drawing.Drawing2D.LineJoin.Bevel;
-            Graphics.FromHwnd(desktopHwnd).DrawRectangle(skyBluePen, x, y, width, height);
-            skyBluePen.Dispose();
-             * */
-
-
-        }
 
         private void StartRecordingButton_Click(object sender, RoutedEventArgs e)
         {
