@@ -47,7 +47,7 @@
         <ProgressBar Height="22" HorizontalAlignment="Right" Margin="0,370,60.6,0" x:Name="RightProgressBar" VerticalAlignment="Top" Width="402" Foreground="#FF5F1718" Background="#FF5F5F5F" />
         <Slider PreviewMouseLeftButtonUp="LeftSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="LeftSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="LeftSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="151,371,0,0" x:Name="LeftSeekSlider" VerticalAlignment="Top" Width="400" Background="{x:Null}" />
         <Slider PreviewMouseLeftButtonUp="RightSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="RightSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="RightSeekSlider_MouseLeftButtonUp" Height="20" HorizontalAlignment="Left" Margin="791,371,0,0" x:Name="RightSeekSlider" VerticalAlignment="Top" Width="402" Background="{x:Null}" />
-        <d3:ChartPlotter Margin="0,422,3,38" x:Name="Plotter" MouseLeftButtonDown="Chart_MouseLeftButtonDown" LegendVisibility="Hidden" NewLegendVisible="False">
+        <d3:ChartPlotter Margin="0,422,3,38" x:Name="Plotter" PreviewMouseLeftButtonDown="Chart_PreviewMouseLeftButtonDown" LegendVisibility="Hidden" NewLegendVisible="False">
             <d3:HorizontalAxisTitle>Time (s)</d3:HorizontalAxisTitle>
             <d3:VerticalAxisTitle>Data</d3:VerticalAxisTitle>
         </d3:ChartPlotter>

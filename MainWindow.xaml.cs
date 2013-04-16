@@ -695,26 +695,30 @@ namespace BiometricStoryboard
 
 
 
-        private void Chart_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        private void Chart_PreviewMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            //bool shiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-            
             var transform = Plotter.Viewport.Transform;
             System.Windows.Point mousePos = mouseTrack.Position;
             var mouseScreenPosition = Mouse.GetPosition(Plotter.CentralGrid);
             var mousePositionInData = mouseScreenPosition.ScreenToData(transform);
             double xValue = mousePositionInData.X;
             System.Diagnostics.Debug.WriteLine(mousePositionInData);
-            var MakeNote = new NoteWindow();
-            MakeNote.ShowDialog();
-            if ((bool)MakeNote.DialogResult)
+            if (IsShiftPressed())
             {
-                NoteString = MakeNote.NoteData;
-                NoteList.Add(NoteString);
-            }
-            
+                var MakeNote = new NoteWindow();
+                MakeNote.ShowDialog();
+                if ((bool)MakeNote.DialogResult)
+                {
+                    NoteString = MakeNote.NoteData;
+                    NoteList.Add(NoteString);
+                }
+            } 
         }
 
+        private static bool IsShiftPressed()
+        {
+            return Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+        }
 
         private void StartRecordingButton_Click(object sender, RoutedEventArgs e)
         {
