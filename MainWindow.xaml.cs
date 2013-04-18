@@ -76,6 +76,8 @@ namespace BiometricStoryboard
         ArrayList COHList = new ArrayList();
         Form button1Form = new Form();
         CursorCoordinateGraph mouseTrack = new CursorCoordinateGraph();
+
+        int CurrentDataDisplayed = 0;
     
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -101,6 +103,8 @@ namespace BiometricStoryboard
             DataTimer.Interval = TimeSpan.FromSeconds(1);
             DataTimer.Tick += new EventHandler(DataTimer_Tick);
             DataTick = new DataTimerTick(DataChangeStatus);
+
+            Plotter.Children.Remove(Plotter.MouseNavigation);
         }
 
         void LeftTimer_Tick(object sender, EventArgs e)
@@ -425,6 +429,7 @@ namespace BiometricStoryboard
         {
             if (DataIsDragging)
             {
+                System.Diagnostics.Debug.WriteLine("slider: " + (int)DataSeekSlider.Value);
                 TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)DataSeekSlider.Value);
                 LeftChangePosition(ts);
                 RightChangePosition(ts);
@@ -436,6 +441,7 @@ namespace BiometricStoryboard
 
         private void DataSeekSlider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            
             TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)DataSeekSlider.Value);
             RightChangePosition(ts);
             LeftChangePosition(ts);
@@ -509,7 +515,6 @@ namespace BiometricStoryboard
                 {
                     System.Windows.MessageBox.Show("Error: Data Pause Error" + ex.Message);
                 }
-
             }
         }
 
@@ -632,19 +637,19 @@ namespace BiometricStoryboard
                         count++;
                     }
                 }
-                UpdateGraphData();
+                UpdateGraphData(EDRList);
             }
         }
 
-        private void UpdateGraphData()
+        private void UpdateGraphData(ArrayList l)
         {
 
             var TimeStampSource = new EnumerableDataSource<float>(TSList);
-            var EDRDataSource = new EnumerableDataSource<float>(EDRList);
+            var YDataSource = new EnumerableDataSource<float>(l);
             
             TimeStampSource.SetXMapping(x => x);
-            EDRDataSource.SetYMapping(y => y);
-            CompositeDataSource TimeDataSource = new CompositeDataSource(TimeStampSource, EDRDataSource);
+            YDataSource.SetYMapping(y => y);
+            CompositeDataSource TimeDataSource = new CompositeDataSource(TimeStampSource, YDataSource);
             Plotter.AddLineGraph(TimeDataSource, new System.Windows.Media.Pen(System.Windows.Media.Brushes.Green, 2), new TrianglePointMarker { Size = 10.0, Pen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.Black, 2.0), Fill = System.Windows.Media.Brushes.GreenYellow },
             new Microsoft.Research.DynamicDataDisplay.PenDescription("GSR data"));
             Plotter.Viewport.FitToView();
@@ -712,12 +717,32 @@ namespace BiometricStoryboard
                     NoteString = MakeNote.NoteData;
                     NoteList.Add(NoteString);
                 }
-            } 
+            }
+            else if (IsControlPressed())
+            {
+                System.Diagnostics.Debug.WriteLine("int: " + (int)xValue);
+                TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)(xValue*1000));
+                RightChangePosition(ts);
+                LeftChangePosition(ts);
+            }
+            else if (IsAltPressed())
+            {
+
+            }
         }
 
         private static bool IsShiftPressed()
         {
             return Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+        }
+
+        private static bool IsControlPressed()
+        {
+            return Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+        }
+        private static bool IsAltPressed()
+        {
+            return Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
         }
 
         private void StartRecordingButton_Click(object sender, RoutedEventArgs e)

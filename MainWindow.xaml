@@ -53,12 +53,9 @@
         </d3:ChartPlotter>
         <Slider HorizontalAlignment="Left" Margin="60,661,0,0" VerticalAlignment="Top" Width="1138" Name="DataSeekSlider" PreviewMouseLeftButtonUp="DataSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="DataSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="DataSeekSlider_MouseLeftButtonUp"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,399,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.4,0.25" Width="112" Foreground="White">Choose data source:</TextBlock>
-        <ComboBox HorizontalAlignment="Left" Margin="127,399,0,0" VerticalAlignment="Top" x:Name="Sources" Width="155" SelectedItem="{Binding SelectedSource}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <cm:ActionMessage MethodName="SourceChange"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+        <ComboBox HorizontalAlignment="Left" Margin="127,399,0,0" VerticalAlignment="Top" x:Name="Sources" Width="155" SelectedItem="{Binding SelectedSource}" SelectionChanged="Sources_SelectionChanged">
+            <ComboBoxItem Content="GSR Data" IsSelected="True"></ComboBoxItem>
+            <ComboBoxItem Content="Heart Rate Data"></ComboBoxItem>
         </ComboBox>
         <Button Content="Start Recording" HorizontalAlignment="Left" Margin="969,392,0,0" VerticalAlignment="Top" Width="92" Height="30" Name="StartRecordingButton" Click="StartRecordingButton_Click"/>
         <Button Content="Stop Recording" HorizontalAlignment="Left" Margin="1066,392,0,0" VerticalAlignment="Top" Width="91" Height="30" Name="StopRecordingButton" Click="StopRecordingButton_Click"/>
