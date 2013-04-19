@@ -656,6 +656,7 @@ namespace BiometricStoryboard
             Plotter.Children.Add(mouseTrack);
             mouseTrack.ShowHorizontalLine = false;
             mouseTrack.ShowVerticalLine = false;
+            
         }
 
 
@@ -759,6 +760,20 @@ namespace BiometricStoryboard
             proc.StartInfo.WorkingDirectory = @"F:\Users\Andy\Dropbox\Current Projects\BiometricStoryboard\BiometricStoryboard";
             proc.StartInfo.FileName = @"F:\Users\Andy\Dropbox\Current Projects\BiometricStoryboard\BiometricStoryboard\stopRecording.bat";
             proc.Start();
+        }
+
+        private void Sources_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            String selection = Sources.SelectedValue.ToString();
+            System.Diagnostics.Debug.WriteLine("Source: " + selection);
+            if (selection == "Heart Rate Data")
+            {
+                UpdateGraphData(RateList);
+            }
+            else if (selection == "GSR Data")
+            {
+                UpdateGraphData(EDRList);
+            }
         }
 
 

@@ -53,7 +53,7 @@
         </d3:ChartPlotter>
         <Slider HorizontalAlignment="Left" Margin="60,661,0,0" VerticalAlignment="Top" Width="1138" Name="DataSeekSlider" PreviewMouseLeftButtonUp="DataSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="DataSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="DataSeekSlider_MouseLeftButtonUp"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,399,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.4,0.25" Width="112" Foreground="White">Choose data source:</TextBlock>
-        <ComboBox HorizontalAlignment="Left" Margin="127,399,0,0" VerticalAlignment="Top" x:Name="Sources" Width="155" SelectedItem="{Binding SelectedSource}" SelectionChanged="Sources_SelectionChanged">
+        <ComboBox HorizontalAlignment="Left" Margin="127,399,0,0" VerticalAlignment="Top" x:Name="Sources" Width="155" SelectionChanged="Sources_SelectionChanged">
             <ComboBoxItem Content="GSR Data" IsSelected="True"></ComboBoxItem>
             <ComboBoxItem Content="Heart Rate Data"></ComboBoxItem>
         </ComboBox>
