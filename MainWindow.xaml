@@ -8,10 +8,15 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:cm="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+        xmlns:controls="using:WinRTXamlToolkit.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="730" Width="1263.2" Loaded="Window_Loaded" ResizeMode="CanResize"
         >
     <Window.Resources>
+
+
+        <Image x:Key="StartRecordImage" Source="/Images/Record.png" Height="50" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Image x:Key="StopRecordImage" Source="/Images/StopRecord.png" Height="50" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <d3:TickToDateLabelProvider x:Key="tickToDate"/>
     </Window.Resources>
 
@@ -30,67 +35,83 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="349*"/>
             <RowDefinition Height="30*"/>
-            <RowDefinition Height="58*"/>
-            <RowDefinition Height="216*"/>
-            <RowDefinition Height="51*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="251*"/>
+            <RowDefinition Height="68*"/>
         </Grid.RowDefinitions>
 
-        <Menu x:Name="File" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="50">
-            <MenuItem Header="_File" RenderTransformOrigin="0.509,0.741" x:Name="FileMenu">
-                <MenuItem Header="_Open Media" HorizontalAlignment="Left" Width="145" x:Name="OpenMediaButton" Click="OpenMediaButton_Click"/>
+        <Menu x:Name="File" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="1253" Grid.ColumnSpan="8" IsMainMenu="True">
+            <MenuItem Header="_File" x:Name="FileMenu">
+                <MenuItem Header="_Open Media" HorizontalAlignment="Left" Width="200" x:Name="OpenMediaButton" Click="OpenMediaButton_Click"/>
                 <MenuItem Header="_Save" HorizontalAlignment="Left" Width="145"/>
-                <MenuItem Header="_Save As.." HorizontalAlignment="Left" Width="145" x:Name="SaveMenu" Click="SaveMenu_Click"/>
+                <MenuItem Header="_Save As.." HorizontalAlignment="Left" Width="145" x:Name="SaveMenu" Click="SaveMenu_Click" />
                 <MenuItem Header="Export" HorizontalAlignment="Left" Width="145"/>
                 <Separator HorizontalAlignment="Left" Width="145"/>
                 <MenuItem Header="_Exit" HorizontalAlignment="Left" Width="145"/>
             </MenuItem>
+            <MenuItem Header="_Edit" x:Name="EditMenu"/>
+            <MenuItem Header="_View" x:Name="ViewMenu" />
+            <MenuItem Header="_Window" x:Name="WindowMenu" />
+            <MenuItem Header="_Help" x:Name="HelpMenu" />
         </Menu>
 
-        
 
-        <Slider Margin="5,5,5,0" x:Name="LeftVolumeSlider" ValueChanged="LeftVolumeSlider_ValueChanged" Grid.Row="1" VerticalAlignment="Top" Height="20" />
-        <TextBlock Margin="60,7,63,7" x:Name="LeftCurrentTimeTextBlock" Text="00:00s" Foreground="White" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34"/>
-        
-    
+
+        <Slider Margin="5,5,48,0" x:Name="LeftVolumeSlider" ValueChanged="LeftVolumeSlider_ValueChanged" Grid.Row="1" VerticalAlignment="Top" Height="20" />
+        <TextBlock Margin="123,7,0,7" x:Name="LeftCurrentTimeTextBlock" Text="00:00s" Foreground="White" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34"/>
+
+
         <Slider PreviewMouseLeftButtonUp="LeftSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="LeftSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="LeftSeekSlider_MouseLeftButtonUp" Margin="5" x:Name="LeftSeekSlider" Background="{x:Null}" Grid.Row="1" Grid.Column="2" Height="Auto" />
-        <ProgressBar Margin="5" x:Name="LeftProgressBar" Foreground="#FF5F1718" Background="#FF5F5F5F" Grid.Row="1" Grid.Column="2" />
-       
-    
-        <TextBlock Margin="61,7,62,7" x:Name="LeftEndTimeTextBlock" Text="00:00s" Foreground="White" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34"/>
+        <ProgressBar Margin="10,5,49,5" x:Name="LeftProgressBar" Foreground="#FF5F1718" Background="#FF5F5F5F" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" />
 
-        <Slider Margin="5" x:Name="RightVolumeSlider" Grid.Row="1" Grid.Column="4"/>
-       
-        <TextBlock Margin="62,7,61,7" x:Name="RightCurrentTimeTextBlock" Text="00:00s" Foreground="White" Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34"/>
+
+        <TextBlock Margin="113,7,10,7" x:Name="LeftEndTimeTextBlock" Text="00:00s" Foreground="White" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34"/>
+
+        <Slider Margin="8,5,45,5" x:Name="RightVolumeSlider" Grid.Row="1" Grid.Column="4"/>
+
+        <TextBlock Margin="124,7,0,7" x:Name="RightCurrentTimeTextBlock" Text="00:00s" Foreground="White" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34" RenderTransformOrigin="1.118,0.438"/>
 
         <Slider x:Name="RightSeekSlider" PreviewMouseLeftButtonUp="RightSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="RightSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="RightSeekSlider_MouseLeftButtonUp" Margin="5"  Background="{x:Null}" Grid.Row="1" Grid.Column="6" />
-        <ProgressBar Margin="5" x:Name="RightProgressBar" Foreground="#FF5F1718" Background="#FF5F5F5F" Grid.Row="1" Grid.Column="6" />
-        <TextBlock Margin="61,7,62,7" x:Name="RightEndTimeTextBlock" Text="00:00s" Foreground="White" Grid.Row="1" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34"/>
+        <ProgressBar Margin="10,5,49,5" x:Name="RightProgressBar" Foreground="#FF5F1718" Background="#FF5F5F5F" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" />
+        <TextBlock Margin="113,7,10,7" x:Name="RightEndTimeTextBlock" Text="00:00s" Foreground="White" Grid.Row="1" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34"/>
 
-        <TextBlock Margin="23,21,26,21" TextWrapping="Wrap" RenderTransformOrigin="0.4,0.25" Foreground="White" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="108">Choose data source:</TextBlock>
-        <ComboBox HorizontalAlignment="Center" Margin="40,18,43,18" VerticalAlignment="Center" x:Name="Sources" SelectionChanged="Sources_SelectionChanged" Grid.Row="2" Grid.Column="1" Height="22" Width="74">
+        <TextBlock Margin="17,17,32,35" TextWrapping="Wrap" RenderTransformOrigin="0.4,0.25" Foreground="White" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="108" Grid.Column="5">Choose data source:</TextBlock>
+        <ComboBox HorizontalAlignment="Center" Margin="130,15,45,31" VerticalAlignment="Center" x:Name="Sources" SelectionChanged="Sources_SelectionChanged" Grid.Row="4" Height="22" Width="140" Grid.ColumnSpan="2" Grid.Column="5">
             <ComboBoxItem Content="GSR Data" IsSelected="True"></ComboBoxItem>
             <ComboBoxItem Content="Heart Rate Data"></ComboBoxItem>
         </ComboBox>
 
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="329" Margin="0,20,0,0" VerticalAlignment="Top" Width="620" Background="Black" Grid.ColumnSpan="4"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="330" Margin="12,19,-2,0" VerticalAlignment="Top" Width="620" Background="Black" Grid.ColumnSpan="4" Grid.Column="4"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="330" Margin="12,20,-2,0" VerticalAlignment="Top" Width="620" Background="Black" Grid.ColumnSpan="4" Grid.Column="4"/>
         <MediaElement x:Name="LeftVideo" Stretch="Fill" LoadedBehavior="Manual" Opacity="1" AllowDrop="True" IsMuted="False" Margin="5,20,5,0"  MediaEnded="LeftVideo_MediaEnded" MediaOpened="LeftVideo_MediaOpened" Grid.ColumnSpan="4"/>
         <MediaElement x:Name="RightVideo" Stretch="Fill" LoadedBehavior="Manual" Opacity="1" AllowDrop="True" IsMuted="False" Margin="5,20,5,0"  MediaEnded="RightVideo_MediaEnded" MediaOpened="RightVideo_MediaOpened" OpacityMask="Black" Grid.Column="4" Grid.ColumnSpan="4" />
-        <Button x:Name="PlayButton" Content="4" FontFamily="Marlett" FontSize="25"  Margin="63,13" Click="playButtonClick" RenderTransformOrigin="0.675,0.428" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="31" />
-        <Button x:Name="PauseButton" Content="Pause" Margin="60,18"  Click="PauseButton_Click" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="22" Width="37"/>
-        <Button Content="g" FontFamily="Marlett" FontSize="20" Margin="66,16"  VerticalAlignment="Center" Click="StopButton_Click" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" Height="26" Width="26" />
-        <Button Content="Make Note" HorizontalAlignment="Center" Margin="46,18" x:Name="MakeNoteButton" VerticalAlignment="Center" Click="MakeNoteButton_Click" Grid.Row="2" Grid.Column="5" Height="22" Width="65" />
-        <Button Content="Start Recording" HorizontalAlignment="Center" Margin="35,18" VerticalAlignment="Center" Name="StartRecordingButton" Click="StartRecordingButton_Click" Grid.Row="2" Grid.Column="6" Height="22" Width="88"/>
-        <Button Content="Stop Recording" HorizontalAlignment="Center" Margin="35,18,34,18" VerticalAlignment="Center" Name="StopRecordingButton" Click="StopRecordingButton_Click" Grid.Row="2" Grid.Column="7" Height="22" Width="88"/>
+        <!-- <Button x:Name="PlayButton" Content="4" FontFamily="Marlett" FontSize="25"  Margin="63,13" Click="playButtonClick" RenderTransformOrigin="0.675,0.428" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="31" />-->
+        <Button  x:Name="PauseButton" Margin="123,4,142,14" PreviewMouseLeftButtonDown="PauseButton_Click" Grid.Row="4" Grid.Column="6" Grid.ColumnSpan="2" RenderTransformOrigin="1.12,5.54" Height="50" Width="50" >
+            <Image Source="Images\playpause.png"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50"/>
+        </Button>
+        <Button x:Name="StopButton" PreviewMouseLeftButtonDown="StopButton_Click" Margin="31,4,76,14" Grid.Row="4" Grid.Column="7" Height="50" RenderTransformOrigin="-0.153,0.373" Width="50">
+            <Image  Source="Images\stop.png" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50"  /> 
+        </Button>
+        
+        
+        
 
-        <d3:ChartPlotter Margin="5" x:Name="Plotter" PreviewMouseLeftButtonDown="Chart_PreviewMouseLeftButtonDown" LegendVisibility="Hidden" NewLegendVisible="False" Grid.Row="3" Grid.ColumnSpan="8">
+
+        <!-- <Button Content="Make Note" HorizontalAlignment="Center" Margin="46,18" x:Name="MakeNoteButton" VerticalAlignment="Center" Click="MakeNoteButton_Click" Grid.Row="2" Grid.Column="5" Height="22" Width="65" /> -->
+        <Button Name="StartRecordingButton" HorizontalAlignment="Center" Margin="93,2,8,11" VerticalAlignment="Center"  PreviewMouseLeftButtonDown="StartRecordingButton_Click" Grid.Row="4" Grid.Column="7" Height="50" Width="50">
+            <DynamicResource ResourceKey="StartRecordImage"/>
+        </Button>
+        <!-- <Button Name="StopRecordingButton" Content="Stop Recording" HorizontalAlignment="Center" Margin="35,18,34,18" VerticalAlignment="Center"  Click="StopRecordingButton_Click" Grid.Row="2" Grid.Column="7" Height="22" Width="88"/> -->
+
+        <d3:ChartPlotter Margin="5,0,5,4"  x:Name="Plotter" PreviewMouseLeftButtonDown="Chart_PreviewMouseLeftButtonDown" LegendVisibility="Hidden" NewLegendVisible="False" Grid.Row="3" Grid.ColumnSpan="8">
             <d3:HorizontalAxisTitle>Time (s)</d3:HorizontalAxisTitle>
             <d3:VerticalAxisTitle>Data</d3:VerticalAxisTitle>
         </d3:ChartPlotter>
 
-        <TextBlock Margin="59,17,64,18" TextWrapping="Wrap" Text="00:00s" VerticalAlignment="Center" Foreground="White" Name="DataCurrentTimeTextBlock" Grid.Row="4" HorizontalAlignment="Center" Height="16" Width="34"/>
-        <Slider Margin="5" Name="DataSeekSlider" PreviewMouseLeftButtonUp="DataSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="DataSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="DataSeekSlider_MouseLeftButtonUp" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="6"/>
-        <TextBlock HorizontalAlignment="Center" Margin="61,17,62,18" TextWrapping="Wrap" Text="00:00s" RenderTransformOrigin="0.811,0.807" Foreground="White" Name="DataEndTimeTextBlock" Grid.Row="4" Grid.Column="7" VerticalAlignment="Center" Height="16" Width="34"/>
+
+        <TextBlock Margin="10,17,101,35" TextWrapping="Wrap" Text="00:00s" VerticalAlignment="Center" Foreground="White" Name="DataCurrentTimeTextBlock" Grid.Row="4" HorizontalAlignment="Center" Height="16" Width="46"/>
+        <Slider Margin="51,12,45,16" Name="DataSeekSlider" PreviewMouseLeftButtonUp="DataSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="DataSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="DataSeekSlider_MouseLeftButtonUp" Grid.Row="4" Grid.ColumnSpan="5"/>
+        <TextBlock HorizontalAlignment="Center" Margin="118,17,145,35" TextWrapping="Wrap" Text="00:00s" RenderTransformOrigin="0.811,0.807" Foreground="White" Name="DataEndTimeTextBlock" Grid.Row="4" Grid.Column="4" VerticalAlignment="Center" Height="17" Width="52" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

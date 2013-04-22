@@ -141,6 +141,10 @@
   <ItemGroup>
     <Content Include="Caliburn.Micro.dll" />
     <Content Include="DynamicDataDisplay.dll" />
+    <Resource Include="Images\playpause.png" />
+    <Resource Include="Images\Record.png" />
+    <Resource Include="Images\stop.png" />
+    <Resource Include="Images\volume.png" />
     <Content Include="System.Windows.Interactivity.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

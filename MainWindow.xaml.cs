@@ -60,6 +60,9 @@ namespace BiometricStoryboard
         bool RightIsPlaying = false;
         bool DataIsPlaying = false;
 
+        bool ZoomedIn = false;
+        bool Recording = false;
+
         string LeftSec, LeftMin, LeftHours;
         string RightSec, RightMin, RightHours;
         string DataSec, DataMin, DataHours;
@@ -77,7 +80,6 @@ namespace BiometricStoryboard
         Form button1Form = new Form();
         CursorCoordinateGraph mouseTrack = new CursorCoordinateGraph();
 
-        int CurrentDataDisplayed = 0;
     
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -460,7 +462,7 @@ namespace BiometricStoryboard
         }
         
 
-        private void playButtonClick(object sender, RoutedEventArgs e)
+        private void play()
         {
             LeftVideo.Play();
             RightVideo.Play();
@@ -507,7 +509,7 @@ namespace BiometricStoryboard
             {
                 try
                 {
-                    
+
                     DataIsPlaying = false;
                     DataTimer.Stop();
                 }
@@ -515,6 +517,10 @@ namespace BiometricStoryboard
                 {
                     System.Windows.MessageBox.Show("Error: Data Pause Error" + ex.Message);
                 }
+            }
+            else
+            {
+                play();
             }
         }
 
@@ -660,7 +666,7 @@ namespace BiometricStoryboard
         }
 
 
-
+        /*
         private void MakeNoteButton_Click(object sender, RoutedEventArgs e)
         {
             var MakeNote = new NoteWindow();
@@ -670,7 +676,7 @@ namespace BiometricStoryboard
                 NoteString = MakeNote.NoteData;
                 NoteList.Add(NoteString);
             }
-        }
+        }*/
 
         private void SaveMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -708,8 +714,9 @@ namespace BiometricStoryboard
             var mouseScreenPosition = Mouse.GetPosition(Plotter.CentralGrid);
             var mousePositionInData = mouseScreenPosition.ScreenToData(transform);
             double xValue = mousePositionInData.X;
+            double yValue = mousePositionInData.Y;
             System.Diagnostics.Debug.WriteLine(mousePositionInData);
-            if (IsShiftPressed())
+            if (IsShiftPressed()) //make note
             {
                 var MakeNote = new NoteWindow();
                 MakeNote.ShowDialog();
@@ -719,17 +726,36 @@ namespace BiometricStoryboard
                     NoteList.Add(NoteString);
                 }
             }
-            else if (IsControlPressed())
+            else if (IsControlPressed()) //sync videos to ctrl+click location
             {
                 System.Diagnostics.Debug.WriteLine("int: " + (int)xValue);
                 TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)(xValue*1000));
                 RightChangePosition(ts);
                 LeftChangePosition(ts);
             }
-            else if (IsAltPressed())
+            else if (IsAltPressed()) // change window zoom
             {
-
+                if (ZoomedIn)
+                {
+                    ZoomOut(xValue, yValue);
+                    ZoomedIn = false;
+                }
+                else
+                {
+                    ZoomIn(xValue, yValue);
+                    ZoomedIn = true;
+                }
             }
+        }
+
+        private void ZoomOut(double xLoc, double yLoc)
+        {
+            Plotter.Viewport.FitToView();
+        }
+
+        private void ZoomIn(double xLoc, double yLoc)
+        {
+            Plotter.Visible = new DataRect(xLoc - 50, yLoc - 200, 100, 400);
         }
 
         private static bool IsShiftPressed()
@@ -748,18 +774,37 @@ namespace BiometricStoryboard
 
         private void StartRecordingButton_Click(object sender, RoutedEventArgs e)
         {
-            Process proc = new Process();
-            proc.StartInfo.WorkingDirectory = @"F:\Users\Andy\Dropbox\Current Projects\BiometricStoryboard\BiometricStoryboard";
-            proc.StartInfo.FileName = @"F:\Users\Andy\Dropbox\Current Projects\BiometricStoryboard\BiometricStoryboard\startRecording.bat";
-            proc.Start();
+            if (!Recording)
+            {
+                Process proc = new Process();
+                proc.StartInfo.WorkingDirectory = @"F:\Users\Andy\Documents\BiometricStoryboard";
+                proc.StartInfo.FileName = @"F:\Users\Andy\Documents\BiometricStoryboard\startRecording.bat";
+                proc.Start();
+                Recording = true;
+                StartRecordingButton.Content = FindResource("StopRecordImage");
+            }
+            else
+            {
+                StopRecording();
+                StartRecordingButton.Content = FindResource("StartRecordImage");
+            }
         }
-
+        /*
         private void StopRecordingButton_Click(object sender, RoutedEventArgs e)
         {
             Process proc = new Process();
-            proc.StartInfo.WorkingDirectory = @"F:\Users\Andy\Dropbox\Current Projects\BiometricStoryboard\BiometricStoryboard";
-            proc.StartInfo.FileName = @"F:\Users\Andy\Dropbox\Current Projects\BiometricStoryboard\BiometricStoryboard\stopRecording.bat";
+            proc.StartInfo.WorkingDirectory = @"F:\Users\Andy\Documents\BiometricStoryboard\BiometricStoryboard";
+            proc.StartInfo.FileName = @"F:\Users\Andy\Documents\BiometricStoryboard\BiometricStoryboard\stopRecording.bat";
             proc.Start();
+        }*/
+
+        private void StopRecording()
+        {
+            Process proc = new Process();
+            proc.StartInfo.WorkingDirectory = @"F:\Users\Andy\Documents\BiometricStoryboard";
+            proc.StartInfo.FileName = @"F:\Users\Andy\Documents\BiometricStoryboard\stopRecording.bat";
+            proc.Start();
+            Recording = false;
         }
 
         private void Sources_SelectionChanged(object sender, SelectionChangedEventArgs e)
