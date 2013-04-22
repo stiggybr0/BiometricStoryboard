@@ -789,14 +789,6 @@ namespace BiometricStoryboard
                 StartRecordingButton.Content = FindResource("StartRecordImage");
             }
         }
-        /*
-        private void StopRecordingButton_Click(object sender, RoutedEventArgs e)
-        {
-            Process proc = new Process();
-            proc.StartInfo.WorkingDirectory = @"F:\Users\Andy\Documents\BiometricStoryboard\BiometricStoryboard";
-            proc.StartInfo.FileName = @"F:\Users\Andy\Documents\BiometricStoryboard\BiometricStoryboard\stopRecording.bat";
-            proc.Start();
-        }*/
 
         private void StopRecording()
         {

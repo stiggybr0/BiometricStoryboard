@@ -8,13 +8,10 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:cm="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-        xmlns:controls="using:WinRTXamlToolkit.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="730" Width="1263.2" Loaded="Window_Loaded" ResizeMode="CanResize"
         >
     <Window.Resources>
-
-
         <Image x:Key="StartRecordImage" Source="/Images/Record.png" Height="50" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <Image x:Key="StopRecordImage" Source="/Images/StopRecord.png" Height="50" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <d3:TickToDateLabelProvider x:Key="tickToDate"/>
@@ -46,6 +43,7 @@
                 <MenuItem Header="_Save" HorizontalAlignment="Left" Width="145"/>
                 <MenuItem Header="_Save As.." HorizontalAlignment="Left" Width="145" x:Name="SaveMenu" Click="SaveMenu_Click" />
                 <MenuItem Header="Export" HorizontalAlignment="Left" Width="145"/>
+                <MenuItem Header="_View Notes" HorizontalAlignment="Left" Width="151" x:Name="ViewNoteMenu" Click="SaveMenu_Click" />
                 <Separator HorizontalAlignment="Left" Width="145"/>
                 <MenuItem Header="_Exit" HorizontalAlignment="Left" Width="145"/>
             </MenuItem>
@@ -57,17 +55,18 @@
 
 
 
-        <Slider Margin="5,5,48,0" x:Name="LeftVolumeSlider" ValueChanged="LeftVolumeSlider_ValueChanged" Grid.Row="1" VerticalAlignment="Top" Height="20" />
-        <TextBlock Margin="123,7,0,7" x:Name="LeftCurrentTimeTextBlock" Text="00:00s" Foreground="White" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34"/>
+        <Slider Margin="5,5,48,0" x:Name="LeftVolumeSlider" ValueChanged="LeftVolumeSlider_ValueChanged" VerticalAlignment="Top" Height="20" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1"/>
+        <TextBlock Margin="121,7,2,7" x:Name="LeftCurrentTimeTextBlock" Text="00:00s" Foreground="White"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1"/>
 
 
-        <Slider PreviewMouseLeftButtonUp="LeftSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="LeftSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="LeftSeekSlider_MouseLeftButtonUp" Margin="5" x:Name="LeftSeekSlider" Background="{x:Null}" Grid.Row="1" Grid.Column="2" Height="Auto" />
-        <ProgressBar Margin="10,5,49,5" x:Name="LeftProgressBar" Foreground="#FF5F1718" Background="#FF5F5F5F" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" />
+        <Slider PreviewMouseLeftButtonUp="LeftSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="LeftSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="LeftSeekSlider_MouseLeftButtonUp" Margin="10,4,49,6" x:Name="LeftSeekSlider" Background="{x:Null}" Grid.Row="1" Grid.Column="1" Height="Auto" Grid.ColumnSpan="3" />
+        <ProgressBar Margin="10,5,49,5" Background="#FF5F5F5F" x:Name="LeftProgressBar" Foreground="#FF5F1718" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" />
+        
 
 
         <TextBlock Margin="113,7,10,7" x:Name="LeftEndTimeTextBlock" Text="00:00s" Foreground="White" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34"/>
 
-        <Slider Margin="8,5,45,5" x:Name="RightVolumeSlider" Grid.Row="1" Grid.Column="4"/>
+        <Slider Margin="8,5,45,5" x:Name="RightVolumeSlider" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="1"/>
 
         <TextBlock Margin="124,7,0,7" x:Name="RightCurrentTimeTextBlock" Text="00:00s" Foreground="White" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Width="34" RenderTransformOrigin="1.118,0.438"/>
 
@@ -90,12 +89,8 @@
             <Image Source="Images\playpause.png"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50"/>
         </Button>
         <Button x:Name="StopButton" PreviewMouseLeftButtonDown="StopButton_Click" Margin="31,4,76,14" Grid.Row="4" Grid.Column="7" Height="50" RenderTransformOrigin="-0.153,0.373" Width="50">
-            <Image  Source="Images\stop.png" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50"  /> 
+            <Image  Source="Images\stop.png" HorizontalAlignment="Center" VerticalAlignment="Center" Height="50" Width="50"  />
         </Button>
-        
-        
-        
-
 
         <!-- <Button Content="Make Note" HorizontalAlignment="Center" Margin="46,18" x:Name="MakeNoteButton" VerticalAlignment="Center" Click="MakeNoteButton_Click" Grid.Row="2" Grid.Column="5" Height="22" Width="65" /> -->
         <Button Name="StartRecordingButton" HorizontalAlignment="Center" Margin="93,2,8,11" VerticalAlignment="Center"  PreviewMouseLeftButtonDown="StartRecordingButton_Click" Grid.Row="4" Grid.Column="7" Height="50" Width="50">
@@ -110,8 +105,8 @@
 
 
         <TextBlock Margin="10,17,101,35" TextWrapping="Wrap" Text="00:00s" VerticalAlignment="Center" Foreground="White" Name="DataCurrentTimeTextBlock" Grid.Row="4" HorizontalAlignment="Center" Height="16" Width="46"/>
-        <Slider Margin="51,12,45,16" Name="DataSeekSlider" PreviewMouseLeftButtonUp="DataSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="DataSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="DataSeekSlider_MouseLeftButtonUp" Grid.Row="4" Grid.ColumnSpan="5"/>
-        <TextBlock HorizontalAlignment="Center" Margin="118,17,145,35" TextWrapping="Wrap" Text="00:00s" RenderTransformOrigin="0.811,0.807" Foreground="White" Name="DataEndTimeTextBlock" Grid.Row="4" Grid.Column="4" VerticalAlignment="Center" Height="17" Width="52" Grid.ColumnSpan="2"/>
+        <Slider Margin="51,12,45,31" Name="DataSeekSlider" PreviewMouseLeftButtonUp="DataSeekSlider_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="DataSeekSlider_PreviewMouseLeftButtonDown" MouseLeftButtonUp="DataSeekSlider_MouseLeftButtonUp" Grid.Row="4" Grid.ColumnSpan="5"/>
+        <TextBlock HorizontalAlignment="Center" Margin="118,16,131,34" TextWrapping="Wrap" Text="00:00s" RenderTransformOrigin="0.811,0.807" Foreground="White" Name="DataEndTimeTextBlock" Grid.Row="4" Grid.Column="4" VerticalAlignment="Center" Height="18" Width="66" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

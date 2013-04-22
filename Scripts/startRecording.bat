@@ -1,0 +1,1 @@
+Start "C:\Program Files\AutoHotkey\AutoHotkey.exe" "F:\Users\Andy\Documents\BiometricStoryboard\startRecordingAHK.ahk"
