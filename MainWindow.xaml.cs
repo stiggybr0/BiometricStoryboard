@@ -30,13 +30,9 @@ using System.Runtime.InteropServices;
 using Microsoft.Research.DynamicDataDisplay.Charts.Navigation;
 using System.Diagnostics;
 
-
-
 namespace BiometricStoryboard
 {
 
-
-   
     public partial class MainWindow : Window
 
     {
