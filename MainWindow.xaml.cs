@@ -74,6 +74,10 @@ namespace BiometricStoryboard
         ArrayList LabList = new ArrayList();
         ArrayList COHList = new ArrayList();
         Form button1Form = new Form();
+
+        Hashtable NoteTable = new Hashtable();
+
+
         CursorCoordinateGraph mouseTrack = new CursorCoordinateGraph();
 
     
@@ -216,6 +220,19 @@ namespace BiometricStoryboard
 
                 #endregion customizeTime
 
+                var Transform = Plotter.Viewport.Transform;
+                System.Windows.Point CurrentPosition = new System.Windows.Point(RightVideo.Position.TotalMilliseconds, 0);
+                 
+                //var mouseScreenPosition = Mouse.GetPosition(Plotter.CentralGrid);
+                //var mousePositionInData = mouseScreenPosition.ScreenToData(Transform);
+                double screenPos = (CurrentPosition.DataToScreen(Transform).X)/1000;
+                Canvas.SetLeft(GraphLine, 111 + screenPos);
+
+                if (GraphLine.Visibility == Visibility.Hidden)
+                {
+                    GraphLine.Visibility = Visibility.Visible;
+                }
+                
                 DataSeekSlider.Value = RightVideo.Position.TotalMilliseconds;
                 if (RightVideo.Position.Hours == 0)
                 {
@@ -643,11 +660,11 @@ namespace BiometricStoryboard
             }
         }
 
-        private void UpdateGraphData(ArrayList l)
+        private void UpdateGraphData(ArrayList list)
         {
 
             var TimeStampSource = new EnumerableDataSource<float>(TSList);
-            var YDataSource = new EnumerableDataSource<float>(l);
+            var YDataSource = new EnumerableDataSource<float>(list);
             
             TimeStampSource.SetXMapping(x => x);
             YDataSource.SetYMapping(y => y);
@@ -701,7 +718,22 @@ namespace BiometricStoryboard
             }
         }
 
+        private String MakeNote()
+        {
+            var NewNote = new NoteWindow();
+            NewNote.ShowDialog();
+            if ((bool)NewNote.DialogResult)
+            {
+                NoteString = NewNote.NoteData;
 
+                return NoteString;
+                //NoteList.Add(NoteString);
+            }
+            else
+            {
+                return "";
+            }
+        }
 
         private void Chart_PreviewMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
@@ -709,25 +741,21 @@ namespace BiometricStoryboard
             System.Windows.Point mousePos = mouseTrack.Position;
             var mouseScreenPosition = Mouse.GetPosition(Plotter.CentralGrid);
             var mousePositionInData = mouseScreenPosition.ScreenToData(transform);
+            var screenPos = mousePositionInData.DataToScreen(transform);
             double xValue = mousePositionInData.X;
             double yValue = mousePositionInData.Y;
-            System.Diagnostics.Debug.WriteLine(mousePositionInData);
+            //System.Diagnostics.Debug.WriteLine(mousePositionInData);
             if (IsShiftPressed()) //make note
             {
-                var MakeNote = new NoteWindow();
-                MakeNote.ShowDialog();
-                if ((bool)MakeNote.DialogResult)
+                String note = MakeNote();
+                if (note != "")
                 {
-                    NoteString = MakeNote.NoteData;
-                    NoteList.Add(NoteString);
+                    NoteTable.Add(xValue, note);
                 }
             }
-            else if (IsControlPressed()) //sync videos to ctrl+click location
+            else if (IsControlPressed()) 
             {
-                System.Diagnostics.Debug.WriteLine("int: " + (int)xValue);
-                TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)(xValue*1000));
-                RightChangePosition(ts);
-                LeftChangePosition(ts);
+                
             }
             else if (IsAltPressed()) // change window zoom
             {
@@ -741,6 +769,13 @@ namespace BiometricStoryboard
                     ZoomIn(xValue, yValue);
                     ZoomedIn = true;
                 }
+            }
+            else //normal left click sync videos to click location
+            {
+                //System.Diagnostics.Debug.WriteLine("int: " + (int)xValue);
+                TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)(xValue * 1000));
+                RightChangePosition(ts);
+                LeftChangePosition(ts);
             }
         }
 
@@ -809,6 +844,32 @@ namespace BiometricStoryboard
             }
         }
 
+        private void LineSeek()
+        {
+            
+        }
+
+        private void ViewNoteMenu_Click(object sender, RoutedEventArgs e)
+        {
+            var NewViewNote = new ViewNoteWindow();
+            String curNote;
+            String curKey;
+            String combinedNotes = "";
+            double truncatedKey;
+            foreach (double key in NoteTable.Keys)
+	        {
+	            curNote = (string)NoteTable[key];
+                truncatedKey = Math.Truncate(key);
+                curKey = truncatedKey.ToString();
+                combinedNotes += "@" + curKey + "s: " + curNote + "\n";
+	        }
+            NewViewNote.NotesTextBox.Text = combinedNotes;
+            NewViewNote.Show();
+                
+
+             
+           
+        }
 
     }
 
