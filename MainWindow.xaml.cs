@@ -77,6 +77,10 @@ namespace BiometricStoryboard
 
         Hashtable NoteTable = new Hashtable();
 
+        double xValue, yValue;
+        double xMinWindowWhenZoomed, yMinWindowWhenZoomed;
+        System.Windows.Point mouseScreenPosition;
+        bool hasTicked = false;
 
         CursorCoordinateGraph mouseTrack = new CursorCoordinateGraph();
 
@@ -222,16 +226,41 @@ namespace BiometricStoryboard
 
                 var Transform = Plotter.Viewport.Transform;
                 System.Windows.Point CurrentPosition = new System.Windows.Point(RightVideo.Position.TotalMilliseconds, 0);
-                 
-                //var mouseScreenPosition = Mouse.GetPosition(Plotter.CentralGrid);
-                //var mousePositionInData = mouseScreenPosition.ScreenToData(Transform);
-                double screenPos = (CurrentPosition.DataToScreen(Transform).X)/1000;
-                Canvas.SetLeft(GraphLine, 111 + screenPos);
 
                 if (GraphLine.Visibility == Visibility.Hidden)
                 {
                     GraphLine.Visibility = Visibility.Visible;
                 }
+                if (!hasTicked)
+                {
+                    Canvas.SetLeft(GraphLine, 113);
+                    hasTicked = true;
+                }
+                //var mouseScreenPosition = Mouse.GetPosition(Plotter.CentralGrid);
+                //var mousePositionInData = mouseScreenPosition.ScreenToData(Transform);
+                double screenPos = 0;
+                if (ZoomedIn)
+                {
+                    screenPos = ((CurrentPosition.DataToScreen(Transform).X) / 1000) - 2*Math.Abs(xMinWindowWhenZoomed);
+                    //System.Diagnostics.Debug.WriteLine("ZoomedIn, position: " + screenPos + ", xclick: " + xValue + ", current: " + CurrentPosition);
+                    
+                }
+                else if(!ZoomedIn)
+                {
+                    screenPos = (CurrentPosition.DataToScreen(Transform).X) / 1000;
+                    //System.Diagnostics.Debug.WriteLine("ZoomedOut, position: " + screenPos);
+                }
+                //Canvas.SetLeft(GraphLine, 60 + mouseScreenPosition.X);
+                Canvas.SetLeft(GraphLine, 113 + screenPos);
+                if (ZoomedIn)
+                {
+                    mouseScreenPosition.X += 12.02;
+                }
+                else if (!ZoomedIn)
+                {
+                    mouseScreenPosition.X += 6.01;
+                }
+                
                 
                 DataSeekSlider.Value = RightVideo.Position.TotalMilliseconds;
                 if (RightVideo.Position.Hours == 0)
@@ -444,7 +473,7 @@ namespace BiometricStoryboard
         {
             if (DataIsDragging)
             {
-                System.Diagnostics.Debug.WriteLine("slider: " + (int)DataSeekSlider.Value);
+                //System.Diagnostics.Debug.WriteLine("slider: " + (int)DataSeekSlider.Value);
                 TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)DataSeekSlider.Value);
                 LeftChangePosition(ts);
                 RightChangePosition(ts);
@@ -739,14 +768,16 @@ namespace BiometricStoryboard
         {
             var transform = Plotter.Viewport.Transform;
             System.Windows.Point mousePos = mouseTrack.Position;
-            var mouseScreenPosition = Mouse.GetPosition(Plotter.CentralGrid);
+            mouseScreenPosition = Mouse.GetPosition(Plotter.CentralGrid);
+            //System.Diagnostics.Debug.WriteLine("Start: " + mouseScreenPosition);
             var mousePositionInData = mouseScreenPosition.ScreenToData(transform);
             var screenPos = mousePositionInData.DataToScreen(transform);
-            double xValue = mousePositionInData.X;
-            double yValue = mousePositionInData.Y;
+            
             //System.Diagnostics.Debug.WriteLine(mousePositionInData);
             if (IsShiftPressed()) //make note
             {
+                xValue = mousePositionInData.X;
+                yValue = mousePositionInData.Y;
                 String note = MakeNote();
                 if (note != "")
                 {
@@ -761,17 +792,32 @@ namespace BiometricStoryboard
             {
                 if (ZoomedIn)
                 {
-                    ZoomOut(xValue, yValue);
+                    ZoomOut();
                     ZoomedIn = false;
                 }
                 else
                 {
+                    xValue = mousePositionInData.X;
+                    yValue = mousePositionInData.Y;
+                    xMinWindowWhenZoomed = xValue - 50;
+                    yMinWindowWhenZoomed = yValue - 50;
                     ZoomIn(xValue, yValue);
                     ZoomedIn = true;
                 }
             }
             else //normal left click sync videos to click location
             {
+                if (ZoomedIn)
+                {
+                    xValue = mousePositionInData.X;
+                    yValue = mousePositionInData.Y;
+                }
+                else
+                {
+                    xValue = mousePositionInData.X;
+                    yValue = mousePositionInData.Y;
+                }
+                
                 //System.Diagnostics.Debug.WriteLine("int: " + (int)xValue);
                 TimeSpan ts = new TimeSpan(0, 0, 0, 0, (int)(xValue * 1000));
                 RightChangePosition(ts);
@@ -779,7 +825,7 @@ namespace BiometricStoryboard
             }
         }
 
-        private void ZoomOut(double xLoc, double yLoc)
+        private void ZoomOut()
         {
             Plotter.Viewport.FitToView();
         }
@@ -809,7 +855,7 @@ namespace BiometricStoryboard
             {
                 Process proc = new Process();
                 proc.StartInfo.WorkingDirectory = @"F:\Users\Andy\Documents\BiometricStoryboard";
-                proc.StartInfo.FileName = @"F:\Users\Andy\Documents\BiometricStoryboard\startRecording.bat";
+                proc.StartInfo.FileName = @"F:\Users\Andy\Documents\BiometricStoryboard\Scripts\startRecording.bat";
                 proc.Start();
                 Recording = true;
                 StartRecordingButton.Content = FindResource("StopRecordImage");
@@ -825,7 +871,7 @@ namespace BiometricStoryboard
         {
             Process proc = new Process();
             proc.StartInfo.WorkingDirectory = @"F:\Users\Andy\Documents\BiometricStoryboard";
-            proc.StartInfo.FileName = @"F:\Users\Andy\Documents\BiometricStoryboard\stopRecording.bat";
+            proc.StartInfo.FileName = @"F:\Users\Andy\Documents\BiometricStoryboard\Scripts\stopRecording.bat";
             proc.Start();
             Recording = false;
         }
@@ -833,7 +879,7 @@ namespace BiometricStoryboard
         private void Sources_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             String selection = Sources.SelectedValue.ToString();
-            System.Diagnostics.Debug.WriteLine("Source: " + selection);
+            //System.Diagnostics.Debug.WriteLine("Source: " + selection);
             if (selection == "Heart Rate Data")
             {
                 UpdateGraphData(RateList);

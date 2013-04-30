@@ -1,1 +1,1 @@
-Start "C:\Program Files\AutoHotkey\AutoHotkey.exe" "F:\Users\Andy\Documents\BiometricStoryboard\stopRecordingAHK.ahk"
+Start "C:\Program Files\AutoHotkey\AutoHotkey.exe" "F:\Users\Andy\Documents\BiometricStoryboard\Scripts\stopRecordingAHK.ahk"

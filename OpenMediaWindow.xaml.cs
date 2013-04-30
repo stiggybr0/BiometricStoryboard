@@ -60,7 +60,7 @@ namespace BiometricStoryboard
         private void LeftVideoBrowse_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
+            dlg.InitialDirectory = "F:\\Senior Project Recordings\\Webcam Captures";
             // Set filter for file extension and default file extension
             dlg.DefaultExt = ".txt";
             dlg.Filter = "All Supported File Types(*.mp3,*.wav,*.mpeg,*.wmv,*.avi,*.mp4)|*.mp3;*.wav;*.mpeg;*.wmv;*.avi;*.mp4";
@@ -79,7 +79,7 @@ namespace BiometricStoryboard
         private void RightVideoBrowse_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
+            dlg.InitialDirectory = "F:\\Senior Project Recordings\\Browser Recordings";
             // Set filter for file extension and default file extension
             dlg.DefaultExt = ".txt";
 
@@ -100,7 +100,7 @@ namespace BiometricStoryboard
         private void BiometricDataBrowse_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
+            dlg.InitialDirectory = "F:\\Senior Project Recordings\\iom recordings";
             // Set filter for file extension and default file extension
             dlg.DefaultExt = ".dat";
             dlg.Filter = "All Supported File Types (.dat)|*.dat";
